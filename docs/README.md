@@ -4,9 +4,9 @@
 [![Dependency Status](https://david-dm.org/uttori/uttori-storage-provider-json-memory.svg)](https://david-dm.org/uttori/uttori-storage-provider-json-memory)
 [![Coverage Status](https://coveralls.io/repos/uttori/uttori-storage-provider-json-memory/badge.svg?branch=master)](https://coveralls.io/r/uttori/uttori-storage-provider-json-memory?branch=master)
 
-# Uttori Storage Provider - JSON File
+# Uttori Storage Provider - JSON Memory
 
-Uttori storage provider using JSON files on disk.
+Uttori storage provider using JavaScript objects in memory. This does NOT persist or restore.
 
 ## Install
 
@@ -18,11 +18,6 @@ npm install --save uttori-storage-provider-json-memory
 
 ```js
 {
-  content_dir: '',
-  history_dir: '',
-  extension: 'json',
-  spaces_document: null,
-  spaces_history: null,
 }
 ```
 
@@ -35,17 +30,18 @@ npm install --save uttori-storage-provider-json-memory
 ## StorageProvider
 Storage for Uttori documents using JSON files stored on the local file system.
 
-**Kind**: global class
+**Kind**: global class  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| config | <code>Object</code> | The configuration object. |
 | documents | <code>Array.&lt;UttoriDocument&gt;</code> | The collection of documents. |
+| history | <code>Object</code> | The collection of document histories indexes. |
+| histories | <code>Object</code> | The collection of document revisions by index. |
 
 
 * [StorageProvider](#StorageProvider)
-    * [new StorageProvider(config)](#new_StorageProvider_new)
+    * [new StorageProvider()](#new_StorageProvider_new)
     * [.all()](#StorageProvider+all) ⇒ <code>Promise</code>
     * [.tags()](#StorageProvider+tags) ⇒ <code>Promise</code>
     * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Promise</code>
@@ -56,36 +52,26 @@ Storage for Uttori documents using JSON files stored on the local file system.
     * [.updateValid(document, originalSlug)](#StorageProvider+updateValid) ℗
     * [.update(document, originalSlug)](#StorageProvider+update)
     * [.delete(slug)](#StorageProvider+delete)
-    * [.refresh()](#StorageProvider+refresh)
+    * [.reset()](#StorageProvider+reset)
     * [.updateHistory(slug, content, originalSlug)](#StorageProvider+updateHistory)
 
 <a name="new_StorageProvider_new"></a>
 
-### new StorageProvider(config)
+### new StorageProvider()
 Creates an instance of StorageProvider.
 
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| config | <code>Object</code> |  | A configuration object. |
-| config.content_dir | <code>string</code> |  | The directory to store documents. |
-| config.history_dir | <code>string</code> |  | The directory to store document histories. |
-| [config.extension] | <code>string</code> | <code>&quot;json&quot;</code> | The file extension to use for file, name of the employee. |
-| [config.spaces_document] | <code>number</code> | <code></code> | The spaces parameter for JSON stringifying documents. |
-| [config.spaces_history] | <code>number</code> | <code></code> | The spaces parameter for JSON stringifying history. |
-
-**Example** *(Init StorageProvider)*
+**Example** *(Init StorageProvider)*  
 ```js
-const storageProvider = new StorageProvider({ content_dir: 'content', history_dir: 'history', spaces_document: 2 });
+const storageProvider = new StorageProvider();
 ```
 <a name="StorageProvider+all"></a>
 
 ### storageProvider.all() ⇒ <code>Promise</code>
 Returns all documents.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Returns**: <code>Promise</code> - Promise object represents all documents.
-**Example**
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Returns**: <code>Promise</code> - Promise object represents all documents.  
+**Example**  
 ```js
 storageProvider.all();
 ➜ [{ slug: 'first-document', ... }, ...]
@@ -95,9 +81,9 @@ storageProvider.all();
 ### storageProvider.tags() ⇒ <code>Promise</code>
 Returns all unique tags.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Returns**: <code>Promise</code> - Promise object represents all documents.
-**Example**
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Returns**: <code>Promise</code> - Promise object represents all documents.  
+**Example**  
 ```js
 storageProvider.tags();
 ➜ ['first-tag', ...]
@@ -107,8 +93,8 @@ storageProvider.tags();
 ### storageProvider.getQuery(query) ⇒ <code>Promise</code>
 Returns all documents matching a given query.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Returns**: <code>Promise</code> - Promise object represents all matching documents.
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Returns**: <code>Promise</code> - Promise object represents all matching documents.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -119,8 +105,8 @@ Returns all documents matching a given query.
 ### storageProvider.get(slug) ⇒ <code>Promise</code>
 Returns a document for a given slug.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Returns**: <code>Promise</code> - Promise object represents the returned UttoriDocument.
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Returns**: <code>Promise</code> - Promise object represents the returned UttoriDocument.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -131,8 +117,8 @@ Returns a document for a given slug.
 ### storageProvider.getHistory(slug) ⇒ <code>Promise</code>
 Returns the history of edits for a given slug.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Returns**: <code>Promise</code> - Promise object represents the returned history.
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Returns**: <code>Promise</code> - Promise object represents the returned history object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -143,8 +129,8 @@ Returns the history of edits for a given slug.
 ### storageProvider.getRevision(slug, revision) ⇒ <code>Promise</code>
 Returns a specifc revision from the history of edits for a given slug and revision timestamp.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Returns**: <code>Promise</code> - Promise object represents the returned revision of the document.
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Returns**: <code>Promise</code> - Promise object represents the returned revision of the document.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -156,7 +142,7 @@ Returns a specifc revision from the history of edits for a given slug and revisi
 ### storageProvider.add(document)
 Saves a document to the file system.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -167,8 +153,8 @@ Saves a document to the file system.
 ### storageProvider.updateValid(document, originalSlug) ℗
 Updates a document and saves to the file system.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
-**Access**: private
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
+**Access**: private  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -179,8 +165,9 @@ Updates a document and saves to the file system.
 
 ### storageProvider.update(document, originalSlug)
 Updates a document and figures out how to save to the file system.
+Calling with a new document will add that document.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -192,29 +179,29 @@ Updates a document and figures out how to save to the file system.
 ### storageProvider.delete(slug)
 Removes a document from the file system.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | slug | <code>string</code> | The slug identifying the document. |
 
-<a name="StorageProvider+refresh"></a>
+<a name="StorageProvider+reset"></a>
 
-### storageProvider.refresh()
-Reloads all documents from the file system into the cache.
+### storageProvider.reset()
+Resets to the initial state.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 <a name="StorageProvider+updateHistory"></a>
 
 ### storageProvider.updateHistory(slug, content, originalSlug)
 Updates History for a given slug, renaming the store file and history folder as needed.
 
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)
+**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | slug | <code>string</code> | The slug of the document to update history for. |
-| content | <code>string</code> | The revision of the document to be saved. |
+| content | <code>Document</code> | The revision of the document to be saved. |
 | originalSlug | <code>string</code> | The original slug identifying the document, or the slug if it has not changed. |
 
 
