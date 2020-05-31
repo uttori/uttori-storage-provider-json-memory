@@ -6,7 +6,9 @@
 
 # Uttori Storage Provider - JSON Memory
 
-Uttori storage provider using JavaScript objects in memory. This does NOT persist or restore.
+Uttori Storage Provider using JavaScript objects in memory. This does NOT persist or restore data.
+
+This repo exports both a Uttori Plugin compliant `Plugin` class as well as the underlying `StorageProvider` class.
 
 ## Install
 
@@ -33,6 +35,31 @@ npm install --save uttori-storage-provider-json-memory
 ```
 
 * * *
+
+# Example
+
+```js
+const { StorageProvider } = require('uttori-storage-provider-json-memory');
+const s = new StorageProvider();
+s.add({
+  title: 'Example Title',
+  slug: 'example-title',
+  content: '## Example Title',
+  html: '',
+  updateDate: 1459310452001,
+  createDate: 1459310452001,
+  tags: ['Example Tag'],
+  customData: {
+    keyA: 'value-a',
+    keyB: 'value-b',
+    keyC: 'value-c',
+  },
+});
+const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL ORDER BY slug ASC LIMIT 1');
+➜  results === [
+      { tags: ['Example Tag'] },
+    ]
+```
 
 # API Reference
 
