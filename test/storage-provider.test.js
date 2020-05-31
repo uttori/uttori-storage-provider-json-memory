@@ -1,5 +1,6 @@
 /* eslint-disable unicorn/no-useless-undefined */
 const test = require('ava');
+const R = require('ramda');
 const Document = require('uttori-document');
 const StorageProvider = require('../src/storage-provider.js');
 
@@ -51,38 +52,7 @@ test('all(): returns all the documents', (t) => {
   t.deepEqual(results, [example]);
 });
 
-test('tags(): returns all unique tags from all the documents', (t) => {
-  const s = new StorageProvider();
-  s.add(example);
-  s.add(fake);
-  s.add(empty);
-  const results = s.tags();
-  t.deepEqual(results, ['Example Tag', 'Fake']);
-});
-
-test('getTaggedDocuments(tag, limit, fields): returns documents with the given tag', (t) => {
-  const s = new StorageProvider();
-  s.add(example);
-  s.add(fake);
-  s.add(empty);
-
-  let tag = 'Example Tag';
-  let query = `SELECT 'slug', 'title', 'tags', 'updateDate' FROM documents WHERE 'tags' INCLUDES ('${tag}') ORDER BY title ASC LIMIT 100`;
-  let output = s.getQuery(query);
-  t.deepEqual(output, [example, fake]);
-
-  tag = 'Fake';
-  query = `SELECT 'slug', 'title', 'tags', 'updateDate' FROM documents WHERE 'tags' INCLUDES ('${tag}') ORDER BY title ASC LIMIT 100`;
-  output = s.getQuery(query);
-  t.deepEqual(output, [fake, empty]);
-
-  tag = 'No Tag';
-  query = `SELECT 'slug', 'title', 'tags', 'updateDate' FROM documents WHERE 'tags' INCLUDES ('${tag}') ORDER BY title ASC LIMIT 100`;
-  output = s.getQuery(query);
-  t.deepEqual(output, []);
-});
-
-test('getRecentDocuments(limit, fields): returns the requested number of the most recently updated documents', (t) => {
+test('getQuery(query, documents): returns the requested number of the most recently updated documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -104,7 +74,7 @@ test('getRecentDocuments(limit, fields): returns the requested number of the mos
   t.deepEqual(output, [empty, fake, example]);
 });
 
-test('getRelatedDocuments(document, limit, fields): returns the requested number of the related documents', (t) => {
+test('getQuery(query, documents): returns the requested number of the related documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -116,7 +86,7 @@ test('getRelatedDocuments(document, limit, fields): returns the requested number
   t.deepEqual(output, [tagged, fake]);
 });
 
-test('getRandomDocuments(limit, fields): returns the requested number of random documents', (t) => {
+test('getQuery(query, documents): returns the requested number of random documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -136,6 +106,34 @@ test('getRandomDocuments(limit, fields): returns the requested number of random 
   query = `SELECT * FROM documents WHERE 'slug' != '' ORDER BY RANDOM LIMIT ${limit}`;
   output = s.getQuery(query);
   t.is(output.length, 3);
+});
+
+test('getQuery(query, documents): returns all unique tags from all the documents', (t) => {
+  const s = new StorageProvider();
+  s.add(example);
+  s.add(fake);
+  s.add(empty);
+  const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL ORDER BY slug ASC LIMIT 3');
+  t.deepEqual(results, [
+    [
+      'Fake',
+    ],
+    [
+      'Example Tag',
+    ],
+    [
+      'Example Tag',
+      'Fake',
+    ],
+  ]);
+
+  const tags = R.pipe(
+    R.flatten,
+    R.uniq,
+    R.filter(Boolean),
+    R.sort((a, b) => a.localeCompare(b)),
+  )(results);
+  t.deepEqual(tags, ['Example Tag', 'Fake']);
 });
 
 test('get(slug): returns the matching document', (t) => {

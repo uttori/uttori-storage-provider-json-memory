@@ -70,8 +70,7 @@ Storage for Uttori documents using JSON files stored on the local file system.
     * [new StorageProvider()](#new_StorageProvider_new)
     * [.documents](#StorageProvider+documents) : [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
     * [.all()](#StorageProvider+all) ⇒ <code>Array</code>
-    * [.tags()](#StorageProvider+tags) ⇒ <code>Array</code>
-    * [.getQuery(query)](#StorageProvider+getQuery) ⇒ [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
+    * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
     * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
     * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>Object</code>
     * [.getRevision(params)](#StorageProvider+getRevision) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
@@ -109,29 +108,17 @@ Returns all documents.
 storageProvider.all();
 ➜ [{ slug: 'first-document', ... }, ...]
 ```
-<a name="StorageProvider+tags"></a>
-
-### storageProvider.tags() ⇒ <code>Array</code>
-Returns all unique tags.
-
-**Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>Array</code> - Returns an array of all unique tags.  
-**Example**  
-```js
-storageProvider.tags();
-➜ ['first-tag', ...]
-```
 <a name="StorageProvider+getQuery"></a>
 
-### storageProvider.getQuery(query) ⇒ [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
+### storageProvider.getQuery(query) ⇒ <code>Array</code>
 Returns all documents matching a given query.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument) - All matching documents.  
+**Returns**: <code>Array</code> - The items matching the supplied query.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| query | <code>string</code> | The conditions on which documents should be returned. |
+| query | <code>String</code> | The conditions on which documents should be returned. |
 
 <a name="StorageProvider+get"></a>
 
@@ -143,7 +130,7 @@ Returns a document for a given slug.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| slug | <code>string</code> | The slug of the document to be returned. |
+| slug | <code>String</code> | The slug of the document to be returned. |
 
 <a name="StorageProvider+getHistory"></a>
 

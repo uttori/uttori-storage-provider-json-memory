@@ -4,7 +4,7 @@ const R = require('ramda');
 const { process } = require('./query-tools');
 
 /**
- * @typedef UttoriDocument The document object we store.
+ * @typedef UttoriDocument The document object we store, with only the minimum methods we access listed.
  * @property {String} slug The unique identifier for the document.
  * @property {String} [title=''] The unique identifier for the document.
  * @property {Number | Date} [createDate] The creation date of the document.
@@ -37,7 +37,6 @@ class StorageProvider {
     this.histories = {};
 
     this.all = this.all.bind(this);
-    this.tags = this.tags.bind(this);
     this.getQuery = this.getQuery.bind(this);
     this.get = this.get.bind(this);
     this.getHistory = this.getHistory.bind(this);
@@ -64,32 +63,9 @@ class StorageProvider {
   }
 
   /**
-   * Returns all unique tags.
-   * @returns {Array} Returns an array of all unique tags.
-   * @example
-   * storageProvider.tags();
-   * ➜ ['first-tag', ...]
-   * @memberof StorageProvider
-   */
-  tags() {
-    debug('tags');
-    const all = this.all();
-
-    const tags = R.pipe(
-      R.pluck('tags'),
-      R.flatten,
-      R.uniq,
-      R.filter(Boolean),
-      R.sort((a, b) => a.localeCompare(b)),
-    )(all);
-    debug('tags:', tags);
-    return tags;
-  }
-
-  /**
    * Returns all documents matching a given query.
-   * @param {string} query - The conditions on which documents should be returned.
-   * @returns {UttoriDocument[]} All matching documents.
+   * @param {String} query - The conditions on which documents should be returned.
+   * @returns {Array} The items matching the supplied query.
    * @memberof StorageProvider
    */
   getQuery(query) {
@@ -100,7 +76,7 @@ class StorageProvider {
 
   /**
    * Returns a document for a given slug.
-   * @param {string} slug - The slug of the document to be returned.
+   * @param {String} slug - The slug of the document to be returned.
    * @returns {UttoriDocument} The returned UttoriDocument.
    * @memberof StorageProvider
    */

@@ -4,7 +4,7 @@ const R = require('ramda');
 const { parseQueryToRamda, validateQuery } = require('uttori-utilities');
 
 /**
- * Processes a query strinReturns all unique tags.
+ * Processes a query string.
  * @param {String} query - The SQL-like query to parse.
  * @param {Object[]} objects - An array of object to search within.
  * @returns {Object[]} Returns an array of all matched documents.
@@ -15,16 +15,20 @@ const { parseQueryToRamda, validateQuery } = require('uttori-utilities');
 const process = (query, objects) => {
   debug('Processing Query:', query);
   // Filter
-  const { where, order, limit } = validateQuery(query);
-  debug('Found where, order, limit:', where, order, limit);
+  const { fields, where, order, limit } = validateQuery(query);
+  debug('Found fields:', fields);
+  debug('Found where:', where);
+  debug('Found order:', order);
+  debug('Found limit:', limit);
   const whereFunctions = parseQueryToRamda(where);
   const filtered = R.filter(whereFunctions)(objects);
+
   // Sort / Order
-  let sorted;
+  let output;
   if (order[0].prop === 'RANDOM') {
-    sorted = R.sort(() => Math.random() - Math.random(), filtered);
+    output = R.sort(() => Math.random() - Math.random(), filtered);
   } else {
-    sorted = R.sortWith(
+    output = R.sortWith(
       order.map((value) => {
         const sorter = value.sort === 'ASC' ? R.ascend : R.descend;
         return sorter(R.prop(value.prop));
@@ -55,7 +59,16 @@ const process = (query, objects) => {
   // R.sortWith([sorter])(docs);
 
   // Limit
-  return R.take(limit, sorted);
+  if (limit > 0) {
+    output = R.take(limit, output);
+  }
+
+  // Select
+  if (!fields.includes('*')) {
+    output = R.pluck(fields, output);
+  }
+
+  return output;
 };
 
 module.exports = {
