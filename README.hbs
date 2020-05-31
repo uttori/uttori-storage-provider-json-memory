@@ -18,6 +18,17 @@ npm install --save uttori-storage-provider-json-memory
 
 ```js
 {
+  // Registration Events
+  events: {
+    add: ['storage-add'],
+    delete: ['storage-delete'],
+    get: ['storage-get'],
+    getHistory: ['storage-get-history'],
+    getRevision: ['storage-get-revision'],
+    query: ['storage-query'],
+    update: ['storage-update'],
+    validateConfig: ['validate-config'],
+  },
 }
 ```
 

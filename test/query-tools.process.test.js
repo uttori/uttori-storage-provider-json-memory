@@ -9,7 +9,7 @@ const docs = [
     size: 8,
     weight: 10,
     location: 'WA',
-    favorite: null,
+    favorite: undefined,
     tags: ['new', 'cool'],
   },
   {

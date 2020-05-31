@@ -1,7 +1,17 @@
+/* eslint-disable unicorn/no-fn-reference-in-iterator */
 const debug = require('debug')('Uttori.StorageProvider.JSON.QueryTools');
 const R = require('ramda');
 const { parseQueryToRamda, validateQuery } = require('uttori-utilities');
 
+/**
+ * Processes a query strinReturns all unique tags.
+ * @param {String} query - The SQL-like query to parse.
+ * @param {Object[]} objects - An array of object to search within.
+ * @returns {Object[]} Returns an array of all matched documents.
+ * @example
+ * process('SELECT name FROM table WHERE age > 1 ORDER BY RANDOM LIMIT 3', [{ ... }, ...]);
+ * ➜ [{ ... }, ...]
+ */
 const process = (query, objects) => {
   debug('Processing Query:', query);
   // Filter
