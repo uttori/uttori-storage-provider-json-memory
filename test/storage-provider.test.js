@@ -115,19 +115,64 @@ test('getQuery(query, documents): returns all unique tags from all the documents
   s.add(empty);
   const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL ORDER BY slug ASC LIMIT 3');
   t.deepEqual(results, [
-    [
-      'Fake',
-    ],
-    [
-      'Example Tag',
-    ],
-    [
-      'Example Tag',
-      'Fake',
-    ],
+    {
+      tags: [
+        'Fake',
+      ],
+    },
+    {
+      tags: [
+        'Example Tag',
+      ],
+    },
+    {
+      tags: [
+        'Example Tag',
+        'Fake',
+      ],
+    },
   ]);
 
   const tags = R.pipe(
+    R.pluck('tags'),
+    R.flatten,
+    R.uniq,
+    R.filter(Boolean),
+    R.sort((a, b) => a.localeCompare(b)),
+  )(results);
+  t.deepEqual(tags, ['Example Tag', 'Fake']);
+});
+
+test('getQuery(query, documents): returns all unique tags and slug from all the documents', (t) => {
+  const s = new StorageProvider();
+  s.add(example);
+  s.add(fake);
+  s.add(empty);
+  const results = s.getQuery('SELECT slug, tags FROM documents WHERE slug IS_NOT_NULL ORDER BY slug ASC LIMIT 3');
+  t.deepEqual(results, [
+    {
+      slug: 'empty',
+      tags: [
+        'Fake',
+      ],
+    },
+    {
+      slug: 'example-title',
+      tags: [
+        'Example Tag',
+      ],
+    },
+    {
+      slug: 'fake',
+      tags: [
+        'Example Tag',
+        'Fake',
+      ],
+    },
+  ]);
+
+  const tags = R.pipe(
+    R.pluck('tags'),
     R.flatten,
     R.uniq,
     R.filter(Boolean),

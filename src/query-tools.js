@@ -83,7 +83,7 @@ const process = (query, objects) => {
 
   // Select
   if (!fields.includes('*')) {
-    output = R.pluck(fields, output);
+    output = R.lift(R.pickAll(fields))(output);
   }
 
   return output;
