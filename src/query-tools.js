@@ -3,6 +3,24 @@ const debug = require('debug')('Uttori.StorageProvider.JSON.QueryTools');
 const R = require('ramda');
 const { parseQueryToRamda, validateQuery } = require('uttori-utilities');
 
+const shuffle = (array) => {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    const temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+};
+
 /**
  * Processes a query string.
  * @param {String} query - The SQL-like query to parse.
@@ -26,7 +44,7 @@ const process = (query, objects) => {
   // Sort / Order
   let output;
   if (order[0].prop === 'RANDOM') {
-    output = R.sort(() => Math.random() - Math.random(), filtered);
+    output = shuffle(filtered);
   } else {
     output = R.sortWith(
       order.map((value) => {
