@@ -5,28 +5,30 @@ const { process } = require('./query-tools');
 
 /**
  * @typedef UttoriDocument The document object we store, with only the minimum methods we access listed.
- * @property {String} slug The unique identifier for the document.
- * @property {String} [title=''] The unique identifier for the document.
- * @property {Number | Date} [createDate] The creation date of the document.
- * @property {Number | Date} [updateDate] The last date the document was updated.
- * @property {String[]} [tags=[]] The unique identifier for the document.
- * @property {Object} [customData={}] Any extra meta data for the document.
+ * @property {string} slug The unique identifier for the document.
+ * @property {string} [title=''] The unique identifier for the document.
+ * @property {number|Date} [createDate] The creation date of the document.
+ * @property {number|Date} [updateDate] The last date the document was updated.
+ * @property {string[]} [tags=[]] The unique identifier for the document.
+ * @property {object} [customData={}] Any extra meta data for the document.
  */
 
 /**
-  * Storage for Uttori documents using JSON files stored on the local file system.
-  * @property {UttoriDocument[]} documents - The collection of documents.
-  * @property {Object} history - The collection of document histories indexes.
-  * @property {Object} histories - The collection of document revisions by index.
-  * @example <caption>Init StorageProvider</caption>
-  * const storageProvider = new StorageProvider();
-  * @class
-  */
+ * Storage for Uttori documents using JSON objects in memory.
+ *
+ * @property {UttoriDocument[]} documents - The collection of documents.
+ * @property {object} history - The collection of document histories indexes.
+ * @property {object} histories - The collection of document revisions by index.
+ * @example <caption>Init StorageProvider</caption>
+ * const storageProvider = new StorageProvider();
+ * @class
+ */
 class StorageProvider {
 /**
-  * Creates an instance of StorageProvider.
-  * @constructor
-  */
+ * Creates an instance of StorageProvider.
+ *
+ * @class
+ */
   constructor() {
     debug('constructor');
     /**
@@ -51,6 +53,7 @@ class StorageProvider {
 
   /**
    * Returns all documents.
+   *
    * @returns {Array} All documents.
    * @example
    * storageProvider.all();
@@ -64,7 +67,8 @@ class StorageProvider {
 
   /**
    * Returns all documents matching a given query.
-   * @param {String} query - The conditions on which documents should be returned.
+   *
+   * @param {string} query - The conditions on which documents should be returned.
    * @returns {Array} The items matching the supplied query.
    * @memberof StorageProvider
    */
@@ -76,7 +80,8 @@ class StorageProvider {
 
   /**
    * Returns a document for a given slug.
-   * @param {String} slug - The slug of the document to be returned.
+   *
+   * @param {string} slug - The slug of the document to be returned.
    * @returns {UttoriDocument} The returned UttoriDocument.
    * @memberof StorageProvider
    */
@@ -96,13 +101,15 @@ class StorageProvider {
       debug('No document found!');
       return;
     }
+    // eslint-disable-next-line consistent-return
     return R.clone(document);
   }
 
   /**
    * Returns the history of edits for a given slug.
+   *
    * @param {string} slug - The slug of the document to get history for.
-   * @returns {Object} The returned history object.
+   * @returns {object} The returned history object.
    * @memberof StorageProvider
    */
   getHistory(slug) {
@@ -111,14 +118,16 @@ class StorageProvider {
       debug('Cannot get document history without slug.', slug);
       return;
     }
+    // eslint-disable-next-line consistent-return
     return this.history[slug] || [];
   }
 
   /**
    * Returns a specifc revision from the history of edits for a given slug and revision timestamp.
-   * @param {Object} params
-   * @param {String} params.slug - The slug of the document to be returned.
-   * @param {String | Number} params.revision - The unix timestamp of the history to be returned.
+   *
+   * @param {object} params - The params object.
+   * @param {string} params.slug - The slug of the document to be returned.
+   * @param {string|number} params.revision - The unix timestamp of the history to be returned.
    * @returns {UttoriDocument} The returned revision of the document.
    * @memberof StorageProvider
    */
@@ -136,11 +145,13 @@ class StorageProvider {
     if (!document) {
       debug(`Document history not found for "${slug}", with revision "${revision}"`);
     }
+    // eslint-disable-next-line consistent-return
     return document;
   }
 
   /**
-   * Saves a document to the file system.
+   * Saves a document to internal array.
+   *
    * @param {UttoriDocument} document - The document to be added to the collection.
    * @memberof StorageProvider
    */
@@ -171,11 +182,12 @@ class StorageProvider {
   }
 
   /**
-   * Updates a document and saves to the file system.
+   * Updates a document and saves to memory.
+   *
    * @private
-   * @param {Object} params
+   * @param {object} params - The params object.
    * @param {UttoriDocument} params.document - The document to be updated in the collection.
-   * @param {String} params.originalSlug - The original slug identifying the document, or the slug if it has not changed.
+   * @param {string} params.originalSlug - The original slug identifying the document, or the slug if it has not changed.
    * @memberof StorageProvider
    */
   updateValid({ document, originalSlug }) {
@@ -190,11 +202,12 @@ class StorageProvider {
   }
 
   /**
-   * Updates a document and figures out how to save to the file system.
+   * Updates a document and figures out how to save to memory.
    * Calling with a new document will add that document.
-   * @param {Object} params
+   *
+   * @param {object} params - The params object.
    * @param {UttoriDocument} params.document - The document to be updated in the collection.
-   * @param {String} params.originalSlug - The original slug identifying the document, or the slug if it has not changed.
+   * @param {string} params.originalSlug - The original slug identifying the document, or the slug if it has not changed.
    * @memberof StorageProvider
    */
   update({ document, originalSlug }) {
@@ -221,8 +234,9 @@ class StorageProvider {
   }
 
   /**
-   * Removes a document from the file system.
-   * @param {String} slug - The slug identifying the document.
+   * Removes a document from memory.
+   *
+   * @param {string} slug - The slug identifying the document.
    * @memberof StorageProvider
    */
   delete(slug) {
@@ -240,6 +254,7 @@ class StorageProvider {
   // Format Specific Methods
   /**
    * Resets to the initial state.
+   *
    * @memberof StorageProvider
    */
   reset() {
@@ -250,13 +265,14 @@ class StorageProvider {
   }
 
   /**
- * Updates History for a given slug, renaming the store file and history folder as needed.
- * @param {Object} params
- * @param {String} params.slug - The slug of the document to update history for.
- * @param {UttoriDocument} params.content - The revision of the document to be saved.
- * @param {String} [params.originalSlug] - The original slug identifying the document, or the slug if it has not changed.
- * @memberof StorageProvider
- */
+   * Updates History for a given slug, renaming the key and history key as needed.
+   *
+   * @param {object} params - The params object.
+   * @param {string} params.slug - The slug of the document to update history for.
+   * @param {UttoriDocument} params.content - The revision of the document to be saved.
+   * @param {string} [params.originalSlug] - The original slug identifying the document, or the slug if it has not changed.
+   * @memberof StorageProvider
+   */
   updateHistory({ slug, content, originalSlug }) {
     debug('updateHistory', slug, originalSlug);
     // Rename old history folder if one existed

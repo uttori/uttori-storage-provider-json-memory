@@ -67,7 +67,7 @@ const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL OR
 
 <dl>
 <dt><a href="#StorageProvider">StorageProvider</a></dt>
-<dd><p>Storage for Uttori documents using JSON files stored on the local file system.</p>
+<dd><p>Storage for Uttori documents using JSON objects in memory.</p>
 </dd>
 </dl>
 
@@ -81,7 +81,7 @@ const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL OR
 <a name="StorageProvider"></a>
 
 ## StorageProvider
-Storage for Uttori documents using JSON files stored on the local file system.
+Storage for Uttori documents using JSON objects in memory.
 
 **Kind**: global class  
 **Properties**
@@ -89,8 +89,8 @@ Storage for Uttori documents using JSON files stored on the local file system.
 | Name | Type | Description |
 | --- | --- | --- |
 | documents | [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument) | The collection of documents. |
-| history | <code>Object</code> | The collection of document histories indexes. |
-| histories | <code>Object</code> | The collection of document revisions by index. |
+| history | <code>object</code> | The collection of document histories indexes. |
+| histories | <code>object</code> | The collection of document revisions by index. |
 
 
 * [StorageProvider](#StorageProvider)
@@ -99,7 +99,7 @@ Storage for Uttori documents using JSON files stored on the local file system.
     * [.all()](#StorageProvider+all) ⇒ <code>Array</code>
     * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
     * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
-    * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>Object</code>
+    * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>object</code>
     * [.getRevision(params)](#StorageProvider+getRevision) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
     * [.add(document)](#StorageProvider+add)
     * [.updateValid(params)](#StorageProvider+updateValid) ℗
@@ -145,7 +145,7 @@ Returns all documents matching a given query.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| query | <code>String</code> | The conditions on which documents should be returned. |
+| query | <code>string</code> | The conditions on which documents should be returned. |
 
 <a name="StorageProvider+get"></a>
 
@@ -157,15 +157,15 @@ Returns a document for a given slug.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| slug | <code>String</code> | The slug of the document to be returned. |
+| slug | <code>string</code> | The slug of the document to be returned. |
 
 <a name="StorageProvider+getHistory"></a>
 
-### storageProvider.getHistory(slug) ⇒ <code>Object</code>
+### storageProvider.getHistory(slug) ⇒ <code>object</code>
 Returns the history of edits for a given slug.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>Object</code> - The returned history object.  
+**Returns**: <code>object</code> - The returned history object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -181,14 +181,14 @@ Returns a specifc revision from the history of edits for a given slug and revisi
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Object</code> |  |
-| params.slug | <code>String</code> | The slug of the document to be returned. |
-| params.revision | <code>String</code> \| <code>Number</code> | The unix timestamp of the history to be returned. |
+| params | <code>object</code> | The params object. |
+| params.slug | <code>string</code> | The slug of the document to be returned. |
+| params.revision | <code>string</code> \| <code>number</code> | The unix timestamp of the history to be returned. |
 
 <a name="StorageProvider+add"></a>
 
 ### storageProvider.add(document)
-Saves a document to the file system.
+Saves a document to internal array.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
@@ -199,41 +199,41 @@ Saves a document to the file system.
 <a name="StorageProvider+updateValid"></a>
 
 ### storageProvider.updateValid(params) ℗
-Updates a document and saves to the file system.
+Updates a document and saves to memory.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 **Access**: private  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Object</code> |  |
+| params | <code>object</code> | The params object. |
 | params.document | [<code>UttoriDocument</code>](#UttoriDocument) | The document to be updated in the collection. |
-| params.originalSlug | <code>String</code> | The original slug identifying the document, or the slug if it has not changed. |
+| params.originalSlug | <code>string</code> | The original slug identifying the document, or the slug if it has not changed. |
 
 <a name="StorageProvider+update"></a>
 
 ### storageProvider.update(params)
-Updates a document and figures out how to save to the file system.
+Updates a document and figures out how to save to memory.
 Calling with a new document will add that document.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Object</code> |  |
+| params | <code>object</code> | The params object. |
 | params.document | [<code>UttoriDocument</code>](#UttoriDocument) | The document to be updated in the collection. |
-| params.originalSlug | <code>String</code> | The original slug identifying the document, or the slug if it has not changed. |
+| params.originalSlug | <code>string</code> | The original slug identifying the document, or the slug if it has not changed. |
 
 <a name="StorageProvider+delete"></a>
 
 ### storageProvider.delete(slug)
-Removes a document from the file system.
+Removes a document from memory.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| slug | <code>String</code> | The slug identifying the document. |
+| slug | <code>string</code> | The slug identifying the document. |
 
 <a name="StorageProvider+reset"></a>
 
@@ -244,16 +244,16 @@ Resets to the initial state.
 <a name="StorageProvider+updateHistory"></a>
 
 ### storageProvider.updateHistory(params)
-Updates History for a given slug, renaming the store file and history folder as needed.
+Updates History for a given slug, renaming the key and history key as needed.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Object</code> |  |
-| params.slug | <code>String</code> | The slug of the document to update history for. |
+| params | <code>object</code> | The params object. |
+| params.slug | <code>string</code> | The slug of the document to update history for. |
 | params.content | [<code>UttoriDocument</code>](#UttoriDocument) | The revision of the document to be saved. |
-| [params.originalSlug] | <code>String</code> | The original slug identifying the document, or the slug if it has not changed. |
+| [params.originalSlug] | <code>string</code> | The original slug identifying the document, or the slug if it has not changed. |
 
 <a name="UttoriDocument"></a>
 
@@ -263,12 +263,12 @@ Updates History for a given slug, renaming the store file and history folder as 
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| slug | <code>String</code> |  | The unique identifier for the document. |
-| [title] | <code>String</code> | <code>&#x27;&#x27;</code> | The unique identifier for the document. |
-| [createDate] | <code>Number</code> \| <code>Date</code> |  | The creation date of the document. |
-| [updateDate] | <code>Number</code> \| <code>Date</code> |  | The last date the document was updated. |
-| [tags] | <code>Array.&lt;String&gt;</code> | <code>[]</code> | The unique identifier for the document. |
-| [customData] | <code>Object</code> | <code>{}</code> | Any extra meta data for the document. |
+| slug | <code>string</code> |  | The unique identifier for the document. |
+| [title] | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The unique identifier for the document. |
+| [createDate] | <code>number</code> \| <code>Date</code> |  | The creation date of the document. |
+| [updateDate] | <code>number</code> \| <code>Date</code> |  | The last date the document was updated. |
+| [tags] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | The unique identifier for the document. |
+| [customData] | <code>object</code> | <code>{}</code> | Any extra meta data for the document. |
 
 
 * * *
