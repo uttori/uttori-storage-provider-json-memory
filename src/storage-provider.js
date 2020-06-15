@@ -32,7 +32,7 @@ class StorageProvider {
   constructor() {
     debug('constructor');
     /**
-     * @type {UttoriDocument[]} this.documents All documents.
+     * @type {UttoriDocument[]}
      */
     this.documents = [];
     this.history = {};

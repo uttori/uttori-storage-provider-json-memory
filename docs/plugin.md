@@ -1,7 +1,7 @@
 <a name="Plugin"></a>
 
 ## Plugin
-Uttori Storage Provider - JSON Memory
+Uttori Storage Provider - JSON Memory, Uttori Plugin Adapter
 
 **Kind**: global class  
 

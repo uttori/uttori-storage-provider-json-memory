@@ -120,8 +120,6 @@ const storageProvider = new StorageProvider();
 <a name="StorageProvider+documents"></a>
 
 ### storageProvider.documents : [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
-this.documents All documents.
-
 **Kind**: instance property of [<code>StorageProvider</code>](#StorageProvider)  
 <a name="StorageProvider+all"></a>
 

@@ -3,7 +3,7 @@ const debug = require('debug')('Uttori.Plugin.StorageProvider.JSON');
 const StorageProvider = require('./storage-provider');
 
 /**
- * Uttori Storage Provider - JSON Memory
+ * Uttori Storage Provider - JSON Memory, Uttori Plugin Adapter
  *
  * @example <caption>Plugin</caption>
  * const storage = Plugin.callback(viewModel, context);
@@ -13,6 +13,7 @@ class Plugin {
   /**
    * The configuration key for plugin to look for in the provided configuration.
    *
+   * @type {string}
    * @returns {string} The configuration key.
    * @example <caption>Plugin.configKey</caption>
    * const config = { ...Plugin.defaultConfig(), ...context.config[Plugin.configKey] };
