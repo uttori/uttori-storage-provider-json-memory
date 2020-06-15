@@ -1,5 +1,5 @@
-[![view on npm](http://img.shields.io/npm/v/uttori-storage-provider-json-memory.svg)](https://www.npmjs.org/package/uttori-storage-provider-json-memory)
-[![npm module downloads](http://img.shields.io/npm/dt/uttori-storage-provider-json-memory.svg)](https://www.npmjs.org/package/uttori-storage-provider-json-memory)
+[![view on npm](http://img.shields.io/npm/v/@uttori/storage-provider-json-memory.svg)](https://www.npmjs.org/package/@uttori/storage-provider-json-memory)
+[![npm module downloads](http://img.shields.io/npm/dt/@uttori/storage-provider-json-memory.svg)](https://www.npmjs.org/package/@uttori/storage-provider-json-memory)
 [![Build Status](https://travis-ci.org/uttori/uttori-storage-provider-json-memory.svg?branch=master)](https://travis-ci.org/uttori/uttori-storage-provider-json-memory)
 [![Dependency Status](https://david-dm.org/uttori/uttori-storage-provider-json-memory.svg)](https://david-dm.org/uttori/uttori-storage-provider-json-memory)
 [![Coverage Status](https://coveralls.io/repos/uttori/uttori-storage-provider-json-memory/badge.svg?branch=master)](https://coveralls.io/r/uttori/uttori-storage-provider-json-memory?branch=master)
