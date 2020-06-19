@@ -30,7 +30,6 @@ Storage for Uttori documents using JSON objects in memory.
 
 * [StorageProvider](#StorageProvider)
     * [new StorageProvider()](#new_StorageProvider_new)
-    * [.documents](#StorageProvider+documents) : [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
     * [.all()](#StorageProvider+all) ⇒ <code>Array</code>
     * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
     * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
@@ -52,10 +51,6 @@ Creates an instance of StorageProvider.
 ```js
 const storageProvider = new StorageProvider();
 ```
-<a name="StorageProvider+documents"></a>
-
-### storageProvider.documents : [<code>Array.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
-**Kind**: instance property of [<code>StorageProvider</code>](#StorageProvider)  
 <a name="StorageProvider+all"></a>
 
 ### storageProvider.all() ⇒ <code>Array</code>

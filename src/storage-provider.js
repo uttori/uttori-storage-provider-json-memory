@@ -31,9 +31,6 @@ class StorageProvider {
  */
   constructor() {
     debug('constructor');
-    /**
-     * @type {UttoriDocument[]}
-     */
     this.documents = [];
     this.history = {};
     this.histories = {};

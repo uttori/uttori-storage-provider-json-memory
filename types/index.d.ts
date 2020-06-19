@@ -37,7 +37,7 @@ declare class Plugin {
      *         get: ['storage-get'],
      *         getHistory: ['storage-get-history'],
      *         getRevision: ['storage-get-revision'],
-     *         query: ['storage-query'],
+     *         getQuery: ['storage-query'],
      *         update: ['storage-update'],
      *         validateConfig: ['validate-config'],
      *       },
@@ -99,7 +99,6 @@ declare type UttoriDocument = {
  * @property histories - The collection of document revisions by index.
  */
 declare class StorageProvider {
-    documents: UttoriDocument[];
     /**
      * Returns all documents.
      * @example

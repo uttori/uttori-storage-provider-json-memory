@@ -35,6 +35,10 @@
   },
   "rules": {
     "ava/no-only-test": 0,
+    "camelcase": 0,
+    "class-methods-use-this": 0,
+    "consistent-return": ["warn", { "treatUndefinedAsUnspecified": false }],
+    "global-require": 0,
     "import/no-dynamic-require": 0,
     "import/no-extraneous-dependencies": [
       "error", {
@@ -43,17 +47,6 @@
         "peerDependencies": false
       }
     ],
-    "node/no-unpublished-require": 0,
-    "class-methods-use-this": 0,
-    "optimize-regex/optimize-regex": "warn",
-    "security/detect-non-literal-fs-filename": 0,
-    "security/detect-non-literal-require": 0,
-    "security/detect-object-injection": 0,
-    "unicorn/filename-case": 0,
-    "unicorn/prevent-abbreviations": 0,
-    "unicorn/catch-error-name": 0,
-    "camelcase": 0,
-    "global-require": 0,
     "max-len": 0,
     "no-empty": ["error", { "allowEmptyCatch": true }],
     "no-inferred-method-name/no-inferred-method-name": "error",
@@ -62,7 +55,14 @@
     "no-restricted-syntax": 0,
     "no-underscore-dangle": 0,
     "no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_", "caughtErrors": "none" }],
-    "consistent-return": ["warn", { "treatUndefinedAsUnspecified": false }],
-    "object-curly-newline": 0
+    "node/no-unpublished-require": 0,
+    "object-curly-newline": 0,
+    "optimize-regex/optimize-regex": "warn",
+    "security/detect-non-literal-fs-filename": 0,
+    "security/detect-non-literal-require": 0,
+    "security/detect-object-injection": 0,
+    "unicorn/catch-error-name": 0,
+    "unicorn/filename-case": 0,
+    "unicorn/prevent-abbreviations": 0
   }
 }
