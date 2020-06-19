@@ -90,7 +90,13 @@ class Plugin {
 
     const storage = new StorageProvider();
     Object.keys(config.events).forEach((method) => {
-      config.events[method].forEach((event) => context.hooks.on(event, storage[method]));
+      config.events[method].forEach((event) => {
+        if (typeof storage[method] !== 'function') {
+          debug(`Missing function "${method}" for key "${event}"`);
+          return;
+        }
+        context.hooks.on(event, storage[method]);
+      });
     });
   }
 }
