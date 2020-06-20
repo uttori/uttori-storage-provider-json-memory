@@ -217,8 +217,6 @@ class StorageProvider {
     debug('update:', document.slug, originalSlug);
     const existing = this.get(document.slug);
     const original = originalSlug ? this.get(originalSlug) : undefined;
-    debug('existing:', existing);
-    debug('original:', original);
     if (existing && original && original.slug !== existing.slug) {
       debug(`Cannot update, existing document with slug "${originalSlug}"!`);
     } else if (existing && original && original.slug === existing.slug) {
