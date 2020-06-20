@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable unicorn/no-useless-undefined */
 const test = require('ava');
 const R = require('ramda');
@@ -52,7 +53,7 @@ test('all(): returns all the documents', (t) => {
   t.deepEqual(results, [example]);
 });
 
-test('getQuery(query, documents): returns the requested number of the most recently updated documents', (t) => {
+test('getQuery(query): returns the requested number of the most recently updated documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -74,7 +75,7 @@ test('getQuery(query, documents): returns the requested number of the most recen
   t.deepEqual(output, [empty, fake, example]);
 });
 
-test('getQuery(query, documents): returns the requested number of the related documents', (t) => {
+test('getQuery(query): returns the requested number of the related documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -86,7 +87,7 @@ test('getQuery(query, documents): returns the requested number of the related do
   t.deepEqual(output, [tagged, fake]);
 });
 
-test('getQuery(query, documents): returns the requested number of random documents', (t) => {
+test('getQuery(query): returns the requested number of random documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -108,7 +109,7 @@ test('getQuery(query, documents): returns the requested number of random documen
   t.is(output.length, 3);
 });
 
-test('getQuery(query, documents): returns all unique tags from all the documents', (t) => {
+test('getQuery(query): returns all unique tags from all the documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -143,7 +144,7 @@ test('getQuery(query, documents): returns all unique tags from all the documents
   t.deepEqual(tags, ['Example Tag', 'Fake']);
 });
 
-test('getQuery(query, documents): returns all unique tags and slug from all the documents', (t) => {
+test('getQuery(query): returns all unique tags and slug from all the documents', (t) => {
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
@@ -525,6 +526,27 @@ test('update(document, originalSlug): updates the document with missing fields',
   t.is(all.length, 2);
   document.title = 'second file-v2';
   s.update({ document, originalSlug: 'second-file' });
+  all = s.all();
+  t.is(all.length, 2);
+  t.is(all[1].title, document.title);
+});
+
+test('update(document, originalSlug): updates the document with missing fields when no originalSlug is provided', (t) => {
+  let all;
+  const s = new StorageProvider();
+  s.add(example);
+  const document = new Document();
+  document.content = '';
+  document.createDate = undefined;
+  document.html = '';
+  document.slug = 'second-file';
+  document.title = 'second file';
+  document.updateDate = undefined;
+  s.add(document);
+  all = s.all();
+  t.is(all.length, 2);
+  document.title = 'second file-v2';
+  s.update({ document, originalSlug: undefined });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);

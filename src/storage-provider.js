@@ -195,6 +195,7 @@ class StorageProvider {
     document.customData = R.isEmpty(document.customData) ? {} : document.customData;
     this.updateHistory({ slug: document.slug, content: document, originalSlug });
     const index = this.documents.findIndex((d) => d.slug === originalSlug);
+    debug('index:', index);
     this.documents[index] = document;
   }
 
@@ -215,17 +216,22 @@ class StorageProvider {
     }
     debug('update:', document.slug, originalSlug);
     const existing = this.get(document.slug);
-    const original = this.get(originalSlug);
+    const original = originalSlug ? this.get(originalSlug) : undefined;
+    debug('existing:', existing);
+    debug('original:', original);
     if (existing && original && original.slug !== existing.slug) {
       debug(`Cannot update, existing document with slug "${originalSlug}"!`);
     } else if (existing && original && original.slug === existing.slug) {
       debug(`Updating document with slug "${document.slug}"`);
       this.updateValid({ document, originalSlug });
+    } else if (existing && !original) {
+      debug(`Updating document with slug "${document.slug}" but no originalSlug`);
+      this.updateValid({ document, originalSlug: document.slug });
     } else if (!existing && original) {
       debug(`Updating document with slug from "${originalSlug}" to "${document.slug}"`);
       this.updateValid({ document, originalSlug });
     } else {
-      debug(`No document found to update with slug "${originalSlug}", adding document with slug "${document.slug}"`);
+      debug(`No document found to update with slug "${originalSlug || ''}", adding document with slug "${document.slug}"`);
       this.add(document);
     }
   }

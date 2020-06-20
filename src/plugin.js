@@ -41,7 +41,6 @@ class Plugin {
         getRevision: ['storage-get-revision'],
         getQuery: ['storage-query'],
         update: ['storage-update'],
-        validateConfig: ['validate-config'],
       },
     };
   }
@@ -70,7 +69,6 @@ class Plugin {
    *         getRevision: ['storage-get-revision'],
    *         getQuery: ['storage-query'],
    *         update: ['storage-update'],
-   *         validateConfig: ['validate-config'],
    *       },
    *     },
    *   },
