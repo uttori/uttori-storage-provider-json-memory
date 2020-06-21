@@ -63,13 +63,13 @@ declare class Plugin {
 /**
  * Processes a query string.
  * @example
- * process('SELECT name FROM table WHERE age > 1 ORDER BY RANDOM LIMIT 3', [{ ... }, ...]);
+ * processQuery('SELECT name FROM table WHERE age > 1 ORDER BY RANDOM LIMIT 3', [{ ... }, ...]);
  * ➜ [{ ... }, ...]
  * @param query - The SQL-like query to parse.
  * @param objects - An array of object to search within.
  * @returns Returns an array of all matched documents.
  */
-declare function process(query: string, objects: object[]): object[];
+declare function processQuery(query: string, objects: object[]): object[];
 
 /**
  * @property slug - The unique identifier for the document.

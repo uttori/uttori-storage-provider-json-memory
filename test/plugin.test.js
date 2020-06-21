@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable security/detect-non-literal-fs-filename */
 const test = require('ava');
-const { EventDispatcher } = require('uttori-utilities');
+const { EventDispatcher } = require('@uttori/event-dispatcher');
 const Plugin = require('../src/plugin.js');
 
 test('register(context): can register', (t) => {

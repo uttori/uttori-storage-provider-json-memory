@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/no-fn-reference-in-iterator */
 const debug = require('debug')('Uttori.StorageProvider.JSON');
 const R = require('ramda');
-const { process } = require('./query-tools');
+const { processQuery } = require('./query-tools');
 
 /**
  * @typedef UttoriDocument The document object we store, with only the minimum methods we access listed.
@@ -82,7 +82,7 @@ class StorageProvider {
   getQuery(query) {
     debug('getQuery:', query);
     const all = this.all();
-    return process(query, all);
+    return processQuery(query, all);
   }
 
   /**

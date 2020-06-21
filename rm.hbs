@@ -20,6 +20,8 @@ npm install --save @uttori/storage-provider-json-memory
 
 ```js
 {
+  update_timestamps: true,
+  use_history: true,
   // Registration Events
   events: {
     add: ['storage-add'],
