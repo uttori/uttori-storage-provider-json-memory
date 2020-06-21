@@ -27,10 +27,20 @@ class StorageProvider {
 /**
  * Creates an instance of StorageProvider.
  *
+ * @param {object} [config] - A configuration object.
+ * @param {boolean} [config.update_timestamps=true] - Should update times be marked at the time of edit.
+ * @param {boolean} [config.use_history=true] - Should history entries be created.
  * @class
  */
-  constructor() {
+  constructor(config = {}) {
     debug('constructor');
+
+    this.config = {
+      update_timestamps: true,
+      use_history: true,
+      ...config,
+    };
+
     this.documents = [];
     this.history = {};
     this.histories = {};
@@ -168,7 +178,9 @@ class StorageProvider {
       document.updateDate = document.createDate;
       document.tags = R.isEmpty(document.tags) ? [] : document.tags;
       document.customData = R.isEmpty(document.customData) ? {} : document.customData;
-      this.updateHistory({ slug: document.slug, content: document });
+      if (this.config.use_history) {
+        this.updateHistory({ slug: document.slug, content: document });
+      }
       this.documents.push(document);
       const random = Math.random().toString(36).slice(8);
       this.history[document.slug] = [`${date}-${random}`];
@@ -190,10 +202,14 @@ class StorageProvider {
   updateValid({ document, originalSlug }) {
     debug('updateValid');
     document = R.clone(document);
-    document.updateDate = Date.now();
+    if (this.config.update_timestamps) {
+      document.updateDate = Date.now();
+    }
     document.tags = R.isEmpty(document.tags) ? [] : document.tags;
     document.customData = R.isEmpty(document.customData) ? {} : document.customData;
-    this.updateHistory({ slug: document.slug, content: document, originalSlug });
+    if (this.config.use_history) {
+      this.updateHistory({ slug: document.slug, content: document, originalSlug });
+    }
     const index = this.documents.findIndex((d) => d.slug === originalSlug);
     debug('index:', index);
     this.documents[index] = document;
@@ -245,7 +261,9 @@ class StorageProvider {
     const existing = this.get(slug);
     if (existing) {
       debug('Document found, deleting document:', slug);
-      this.updateHistory({ slug, content: existing });
+      if (this.config.use_history) {
+        this.updateHistory({ slug, content: existing });
+      }
       this.documents = this.documents.filter((d) => d.slug !== slug);
     } else {
       debug('Document not found:', slug);

@@ -458,6 +458,29 @@ test('update(document, originalSlug): updates the document', (t) => {
   t.is(all[1].title, document.title);
 });
 
+test('update(document, originalSlug): updates the document without timestamps or history', (t) => {
+  let all;
+  const s = new StorageProvider({ use_history: false, update_timestamps: false });
+  s.add(example);
+  const document = new Document();
+  document.content = '';
+  document.createDate = undefined;
+  document.customData = { test: true };
+  document.html = '';
+  document.slug = 'second-file';
+  document.tags = ['test'];
+  document.title = 'second file';
+  document.updateDate = undefined;
+  s.add(document);
+  all = s.all();
+  t.is(all.length, 2);
+  document.title = 'second file-v2';
+  s.update({ document, originalSlug: 'second-file' });
+  all = s.all();
+  t.is(all.length, 2);
+  t.is(all[1].title, document.title);
+});
+
 test('update(document, originalSlug): renames the history if it exists', (t) => {
   let all;
   let history;
@@ -611,6 +634,27 @@ test('delete(document): removes the document', (t) => {
   t.is(all.length, 1);
 });
 
+test('delete(document): removes the document without history', (t) => {
+  let all;
+  const s = new StorageProvider({ use_history: false });
+  s.add(example);
+  const document = new Document();
+  document.content = '';
+  document.createDate = 1;
+  document.customData = {};
+  document.html = '';
+  document.slug = 'second-file';
+  document.tags = [];
+  document.title = 'second file';
+  document.updateDate = 1;
+  s.add(document);
+  all = s.all();
+  t.is(all.length, 2);
+  s.delete(document.slug);
+  all = s.all();
+  t.is(all.length, 1);
+});
+
 test('delete(document): does nothing when no document is found', (t) => {
   let all;
   const s = new StorageProvider();
@@ -638,17 +682,4 @@ test('reset(document, originalSlug): returns to initial state', (t) => {
   t.is(s.all().length, 1);
   s.reset();
   t.is(s.all().length, 0);
-});
-
-test('augmentDocuments(documents, _fields): returns all matching documents', (t) => {
-  const s = new StorageProvider();
-  s.add(example);
-  s.add(fake);
-  s.add(empty);
-
-  const search_results = [{ slug: 'example-title' }, { slug: 'fake' }];
-  const includes = search_results.map((result) => `'${result.slug}'`).join(',');
-  const query = `SELECT * FROM documents WHERE slug INCLUDES (${includes}) ORDER BY title ASC LIMIT 100`;
-  const output = s.getQuery(query);
-  t.deepEqual(output, [example, fake]);
 });
