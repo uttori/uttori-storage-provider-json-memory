@@ -96,8 +96,15 @@ declare type UttoriDocument = {
  * @property documents - The collection of documents.
  * @property history - The collection of document histories indexes.
  * @property histories - The collection of document revisions by index.
+ * @param [config] - A configuration object.
+ * @param [config.update_timestamps = true] - Should update times be marked at the time of edit.
+ * @param [config.use_history = true] - Should history entries be created.
  */
 declare class StorageProvider {
+    constructor(config?: {
+        update_timestamps?: boolean;
+        use_history?: boolean;
+    });
     /**
      * Returns all documents.
      * @example

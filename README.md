@@ -94,7 +94,7 @@ Storage for Uttori documents using JSON objects in memory.
 
 
 * [StorageProvider](#StorageProvider)
-    * [new StorageProvider()](#new_StorageProvider_new)
+    * [new StorageProvider([config])](#new_StorageProvider_new)
     * [.all()](#StorageProvider+all) ⇒ <code>Array</code>
     * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
     * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
@@ -109,8 +109,15 @@ Storage for Uttori documents using JSON objects in memory.
 
 <a name="new_StorageProvider_new"></a>
 
-### new StorageProvider()
+### new StorageProvider([config])
 Creates an instance of StorageProvider.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [config] | <code>object</code> |  | A configuration object. |
+| [config.update_timestamps] | <code>boolean</code> | <code>true</code> | Should update times be marked at the time of edit. |
+| [config.use_history] | <code>boolean</code> | <code>true</code> | Should history entries be created. |
 
 **Example** *(Init StorageProvider)*  
 ```js
