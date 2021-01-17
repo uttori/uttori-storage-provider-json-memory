@@ -5,14 +5,24 @@ const R = require('ramda');
 const Document = require('uttori-document');
 const StorageProvider = require('../src/storage-provider.js');
 
+const tagExample = 'Example Tag';
+const tagFake = 'Fake';
+const exampleSlug = 'example-title';
+const secondFile = 'second-file';
+const secondFileNewDirectory = 'second-file-new-directory';
+const secondFileV1 = 'second file';
+const secondFileV2 = 'second file-v2';
+const secondFileV3 = 'second file-v3';
+const secondFileV4 = 'second file-v4';
+
 const example = {
   title: 'Example Title',
-  slug: 'example-title',
+  slug: exampleSlug,
   content: '## Example Title',
   html: '',
   updateDate: 1459310452001,
   createDate: 1459310452001,
-  tags: ['Example Tag'],
+  tags: [tagExample],
   customData: {
     keyA: 'value-a',
     keyB: 'value-b',
@@ -27,18 +37,18 @@ const empty = {
   html: '',
   updateDate: 1459310452003,
   createDate: 1459310452003,
-  tags: ['Fake'],
+  tags: [tagFake],
   customData: {},
 };
 
 const fake = {
-  title: 'Fake',
+  title: tagFake,
   slug: 'fake',
   content: '# Fake',
   html: '',
   updateDate: 1459310452002,
   createDate: 1459310452002,
-  tags: ['Example Tag', 'Fake'],
+  tags: [tagExample, tagFake],
   customData: {},
 };
 
@@ -79,7 +89,7 @@ test('getQuery(query): returns the requested number of the related documents', (
   const s = new StorageProvider();
   s.add(example);
   s.add(fake);
-  const tagged = { ...empty, tags: ['Example Tag'] };
+  const tagged = { ...empty, tags: [tagExample] };
   s.add(tagged);
 
   const query = `SELECT * FROM documents WHERE 'tags' INCLUDES ('${example.tags.join(',')}') AND slug != ${example.slug} ORDER BY title DESC LIMIT 2`;
@@ -118,18 +128,18 @@ test('getQuery(query): returns all unique tags from all the documents', (t) => {
   t.deepEqual(results, [
     {
       tags: [
-        'Fake',
+        tagFake,
       ],
     },
     {
       tags: [
-        'Example Tag',
+        tagExample,
       ],
     },
     {
       tags: [
-        'Example Tag',
-        'Fake',
+        tagExample,
+        tagFake,
       ],
     },
   ]);
@@ -141,7 +151,7 @@ test('getQuery(query): returns all unique tags from all the documents', (t) => {
     R.filter(Boolean),
     R.sort((a, b) => a.localeCompare(b)),
   )(results);
-  t.deepEqual(tags, ['Example Tag', 'Fake']);
+  t.deepEqual(tags, [tagExample, tagFake]);
 });
 
 test('getQuery(query): returns all unique tags and slug from all the documents', (t) => {
@@ -154,20 +164,20 @@ test('getQuery(query): returns all unique tags and slug from all the documents',
     {
       slug: 'empty',
       tags: [
-        'Fake',
+        tagFake,
       ],
     },
     {
-      slug: 'example-title',
+      slug: exampleSlug,
       tags: [
-        'Example Tag',
+        tagExample,
       ],
     },
     {
       slug: 'fake',
       tags: [
-        'Example Tag',
-        'Fake',
+        tagExample,
+        tagFake,
       ],
     },
   ]);
@@ -179,7 +189,7 @@ test('getQuery(query): returns all unique tags and slug from all the documents',
     R.filter(Boolean),
     R.sort((a, b) => a.localeCompare(b)),
   )(results);
-  t.deepEqual(tags, ['Example Tag', 'Fake']);
+  t.deepEqual(tags, [tagExample, tagFake]);
 });
 
 test('get(slug): returns the matching document', (t) => {
@@ -227,42 +237,42 @@ test('getHistory(slug): returns an array of the history revisions', (t) => {
   document.createDate = undefined;
   document.customData = { test: true };
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = ['test'];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file');
+  t.is(all[0].title, secondFileV1);
   history = s.getHistory(document.slug);
   t.is(history.length, 1);
 
-  document.title = 'second file-v2';
-  document.content = 'second file-v2';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV2;
+  document.content = secondFileV2;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file-v2');
+  t.is(all[0].title, secondFileV2);
   history = s.getHistory(document.slug);
   t.is(history.length, 2);
 
-  document.title = 'second file-v3';
-  document.content = 'second file-v3';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV3;
+  document.content = secondFileV3;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file-v3');
+  t.is(all[0].title, secondFileV3);
   history = s.getHistory(document.slug);
   t.is(history.length, 3);
 
-  document.slug = 'second-file-new-directory';
-  document.title = 'second file-v4';
-  document.content = 'second file-v4';
-  s.update({ document, originalSlug: 'second-file' });
+  document.slug = secondFileNewDirectory;
+  document.title = secondFileV4;
+  document.content = secondFileV4;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file-v4');
+  t.is(all[0].title, secondFileV4);
   history = s.getHistory(document.slug);
   t.is(history.length, 4);
 });
@@ -298,42 +308,42 @@ test('getRevision({ slug, revision }): returns a specific revision of an article
   document.createDate = undefined;
   document.customData = { test: true };
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = ['test'];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file');
+  t.is(all[0].title, secondFileV1);
   history = s.getHistory(document.slug);
   t.is(history.length, 1);
 
-  document.title = 'second file-v2';
-  document.content = 'second file-v2';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV2;
+  document.content = secondFileV2;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file-v2');
+  t.is(all[0].title, secondFileV2);
   history = s.getHistory(document.slug);
   t.is(history.length, 2);
 
-  document.title = 'second file-v3';
-  document.content = 'second file-v3';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV3;
+  document.content = secondFileV3;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file-v3');
+  t.is(all[0].title, secondFileV3);
   history = s.getHistory(document.slug);
   t.is(history.length, 3);
 
-  document.slug = 'second-file-new-directory';
-  document.title = 'second file-v4';
-  document.content = 'second file-v4';
-  s.update({ document, originalSlug: 'second-file' });
+  document.slug = secondFileNewDirectory;
+  document.title = secondFileV4;
+  document.content = secondFileV4;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
-  t.is(all[0].title, 'second file-v4');
+  t.is(all[0].title, secondFileV4);
   history = s.getHistory(document.slug);
   t.is(history.length, 4);
 
@@ -342,13 +352,13 @@ test('getRevision({ slug, revision }): returns a specific revision of an article
 
   let revision;
   revision = s.getRevision({ slug: document.slug, revision: history[0] });
-  t.is(revision.title, 'second file');
+  t.is(revision.title, secondFileV1);
   revision = s.getRevision({ slug: document.slug, revision: history[1] });
-  t.is(revision.title, 'second file-v2');
+  t.is(revision.title, secondFileV2);
   revision = s.getRevision({ slug: document.slug, revision: history[2] });
-  t.is(revision.title, 'second file-v3');
+  t.is(revision.title, secondFileV3);
   revision = s.getRevision({ slug: document.slug, revision: history[3] });
-  t.is(revision.title, 'second file-v4');
+  t.is(revision.title, secondFileV4);
 });
 
 test('add(document): cannot add without a document or a slug', (t) => {
@@ -370,9 +380,9 @@ test('add(document): creates a new document', (t) => {
   document.createDate = undefined;
   document.customData = {};
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = [];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   const all = s.all();
@@ -387,8 +397,8 @@ test('add(document): creates a new document with missing fields', (t) => {
   document.content = '';
   document.createDate = undefined;
   document.html = '';
-  document.slug = 'second-file';
-  document.title = 'second file';
+  document.slug = secondFile;
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   const all = s.all();
@@ -405,9 +415,9 @@ test('add(document): does not create a document with the same slug', (t) => {
   document.createDate = undefined;
   document.customData = {};
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = [];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
@@ -424,12 +434,12 @@ test('update(document, originalSlug): does not update without a document or slug
   const s = new StorageProvider();
   s.add(example);
 
-  s.update({ document: undefined, originalSlug: 'second-file' });
+  s.update({ document: undefined, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
   t.is(all[0].title, example.title);
 
-  s.update({ document: { title: 'New' }, slug: undefined, originalSlug: 'second-file' });
+  s.update({ document: { title: 'New' }, slug: undefined, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 1);
   t.is(all[0].title, example.title);
@@ -444,15 +454,15 @@ test('update(document, originalSlug): updates the document', (t) => {
   document.createDate = undefined;
   document.customData = { test: true };
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = ['test'];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 2);
-  document.title = 'second file-v2';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV2;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);
@@ -467,15 +477,15 @@ test('update(document, originalSlug): updates the document without timestamps or
   document.createDate = undefined;
   document.customData = { test: true };
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = ['test'];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 2);
-  document.title = 'second file-v2';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV2;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);
@@ -491,9 +501,9 @@ test('update(document, originalSlug): renames the history if it exists', (t) => 
   document.createDate = undefined;
   document.customData = { test: true };
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = ['test'];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
@@ -501,36 +511,36 @@ test('update(document, originalSlug): renames the history if it exists', (t) => 
   history = s.getHistory(document.slug);
   t.is(history.length, 1);
 
-  document.title = 'second file-v2';
-  document.content = 'second file-v2';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV2;
+  document.content = secondFileV2;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);
   history = s.getHistory(document.slug);
   t.is(history.length, 2);
 
-  document.title = 'second file-v3';
-  document.content = 'second file-v3';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV3;
+  document.content = secondFileV3;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);
   history = s.getHistory(document.slug);
   t.is(history.length, 3);
 
-  document.slug = 'second-file-new-directory';
-  document.title = 'second file-v4';
-  document.content = 'second file-v4';
-  s.update({ document, originalSlug: 'second-file' });
+  document.slug = secondFileNewDirectory;
+  document.title = secondFileV4;
+  document.content = secondFileV4;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);
   history = s.getHistory(document.slug);
   t.is(history.length, 4);
 
-  t.is(s.history['second-file-new-directory'].length, 4);
-  t.is(s.history['second-file'], undefined);
+  t.is(s.history[secondFileNewDirectory].length, 4);
+  t.is(s.history[secondFile], undefined);
 });
 
 test('update(document, originalSlug): updates the document with missing fields', (t) => {
@@ -541,14 +551,14 @@ test('update(document, originalSlug): updates the document with missing fields',
   document.content = '';
   document.createDate = undefined;
   document.html = '';
-  document.slug = 'second-file';
-  document.title = 'second file';
+  document.slug = secondFile;
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 2);
-  document.title = 'second file-v2';
-  s.update({ document, originalSlug: 'second-file' });
+  document.title = secondFileV2;
+  s.update({ document, originalSlug: secondFile });
   all = s.all();
   t.is(all.length, 2);
   t.is(all[1].title, document.title);
@@ -562,13 +572,13 @@ test('update(document, originalSlug): updates the document with missing fields w
   document.content = '';
   document.createDate = undefined;
   document.html = '';
-  document.slug = 'second-file';
-  document.title = 'second file';
+  document.slug = secondFile;
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 2);
-  document.title = 'second file-v2';
+  document.title = secondFileV2;
   s.update({ document, originalSlug: undefined });
   all = s.all();
   t.is(all.length, 2);
@@ -583,17 +593,17 @@ test('update(document, originalSlug): does not update when the document exists',
   document.content = '';
   document.createDate = undefined;
   document.html = '';
-  document.slug = 'second-file';
-  document.title = 'second file';
+  document.slug = secondFile;
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();
   t.is(all.length, 2);
-  document.title = 'second file-v2';
-  s.update({ document, originalSlug: 'example-title' });
+  document.title = secondFileV2;
+  s.update({ document, originalSlug: exampleSlug });
   all = s.all();
   t.is(all.length, 2);
-  t.is(all[1].title, 'second file');
+  t.is(all[1].title, secondFileV1);
 });
 
 test('update(document, originalSlug): adds a document if the one to update is no found', (t) => {
@@ -622,9 +632,9 @@ test('delete(document): removes the document', (t) => {
   document.createDate = 1;
   document.customData = {};
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = [];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = 1;
   s.add(document);
   all = s.all();
@@ -643,9 +653,9 @@ test('delete(document): removes the document without history', (t) => {
   document.createDate = 1;
   document.customData = {};
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = [];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = 1;
   s.add(document);
   all = s.all();
@@ -664,9 +674,9 @@ test('delete(document): does nothing when no document is found', (t) => {
   document.createDate = undefined;
   document.customData = {};
   document.html = '';
-  document.slug = 'second-file';
+  document.slug = secondFile;
   document.tags = [];
-  document.title = 'second file';
+  document.title = secondFileV1;
   document.updateDate = undefined;
   s.add(document);
   all = s.all();

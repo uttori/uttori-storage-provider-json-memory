@@ -45,6 +45,14 @@ npm install --save @uttori/storage-provider-json-memory
 # Example
 
 ```js
+// When part of UttoriWiki:
+import { Plugin as StorageProviderJSON } from '@uttori/storage-provider-json-memory';
+// or
+const { Plugin: StorageProviderJSON } = require('@uttori/storage-provider-json-memory');
+
+// When stand alone:
+import StorageProvider from '@uttori/storage-provider-json-memory';
+// or
 const { StorageProvider } = require('@uttori/storage-provider-json-memory');
 const s = new StorageProvider();
 s.add({
@@ -65,6 +73,8 @@ const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL OR
 ➜  results === [
       { tags: ['Example Tag'] },
     ]
+const results = s.getQuery('SELECT COUNT(*) FROM documents WHERE slug IS_NOT_NULL ORDER BY RANDOM ASC LIMIT -1');
+➜  results === 1
 ```
 
 # API Reference
