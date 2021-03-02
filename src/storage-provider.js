@@ -1,16 +1,12 @@
-/* eslint-disable unicorn/no-fn-reference-in-iterator */
+/** @type {Function} */
 let debug = () => {}; try { debug = require('debug')('Uttori.StorageProvider.JSON'); } catch {}
-const R = require('ramda');
 const { processQuery } = require('./query-tools');
 
 /**
  * @typedef UttoriDocument The document object we store, with only the minimum methods we access listed.
  * @property {string} slug The unique identifier for the document.
- * @property {string} [title=''] The unique identifier for the document.
  * @property {number|Date} [createDate] The creation date of the document.
  * @property {number|Date} [updateDate] The last date the document was updated.
- * @property {string[]} [tags=[]] The unique identifier for the document.
- * @property {object} [customData={}] Any extra meta data for the document.
  */
 
 /**
@@ -41,7 +37,7 @@ class StorageProvider {
       ...config,
     };
 
-    this.documents = [];
+    this.documents = {};
     this.history = {};
     this.histories = {};
 
@@ -61,11 +57,12 @@ class StorageProvider {
   /**
    * Returns all documents.
    *
-   * @returns {Array} All documents.
+   * @returns {object} All documents.
    * @example
+   * ```js
    * storageProvider.all();
-   * ➜ [{ slug: 'first-document', ... }, ...]
-   * @memberof StorageProvider
+   * ➜ { 'first-document': { slug: 'first-document', ... }, ... }
+   * ```
    */
   all() {
     debug('all');
@@ -77,12 +74,10 @@ class StorageProvider {
    *
    * @param {string} query - The conditions on which documents should be returned.
    * @returns {Array} The items matching the supplied query.
-   * @memberof StorageProvider
    */
   getQuery(query) {
     debug('getQuery:', query);
-    const all = this.all();
-    return processQuery(query, all);
+    return processQuery(query, Object.values(this.all()));
   }
 
   /**
@@ -98,18 +93,13 @@ class StorageProvider {
       debug('Cannot get document without slug.', slug);
       return;
     }
-    const all = this.all();
-    const document = R.clone(
-      R.find(
-        R.propEq('slug', slug),
-      )(all),
-    );
+    const document = this.documents[slug];
     if (!document) {
       debug('No document found!');
       return;
     }
     // eslint-disable-next-line consistent-return
-    return R.clone(document);
+    return { ...document };
   }
 
   /**
@@ -168,7 +158,7 @@ class StorageProvider {
       debug('Cannot add, missing slug.');
       return;
     }
-    document = R.clone(document);
+    document = { ...document };
     debug('add:', document.slug);
     const existing = this.get(document.slug);
     if (!existing) {
@@ -176,12 +166,10 @@ class StorageProvider {
       const date = document.createDate || Date.now();
       document.createDate = date;
       document.updateDate = document.createDate;
-      document.tags = R.isEmpty(document.tags) ? [] : document.tags;
-      document.customData = R.isEmpty(document.customData) ? {} : document.customData;
       if (this.config.use_history) {
         this.updateHistory({ slug: document.slug, content: document });
       }
-      this.documents.push(document);
+      this.documents[document.slug] = document;
       const random = Math.random().toString(36).slice(8);
       this.history[document.slug] = [`${date}-${random}`];
       this.histories[`${document.slug}-${date}-${random}`] = document;
@@ -201,18 +189,14 @@ class StorageProvider {
    */
   updateValid({ document, originalSlug }) {
     debug('updateValid');
-    document = R.clone(document);
+    document = { ...document };
     if (this.config.update_timestamps) {
       document.updateDate = Date.now();
     }
-    document.tags = R.isEmpty(document.tags) ? [] : document.tags;
-    document.customData = R.isEmpty(document.customData) ? {} : document.customData;
     if (this.config.use_history) {
       this.updateHistory({ slug: document.slug, content: document, originalSlug });
     }
-    const index = this.documents.findIndex((d) => d.slug === originalSlug);
-    debug('index:', index);
-    this.documents[index] = document;
+    this.documents[originalSlug] = document;
   }
 
   /**
@@ -264,13 +248,14 @@ class StorageProvider {
       if (this.config.use_history) {
         this.updateHistory({ slug, content: existing });
       }
-      this.documents = this.documents.filter((d) => d.slug !== slug);
+      delete this.documents[slug];
     } else {
       debug('Document not found:', slug);
     }
   }
 
   // Format Specific Methods
+
   /**
    * Resets to the initial state.
    *
@@ -278,7 +263,7 @@ class StorageProvider {
    */
   reset() {
     debug('reset');
-    this.documents = [];
+    this.documents = {};
     this.history = {};
     this.histories = {};
   }
@@ -301,13 +286,13 @@ class StorageProvider {
       delete this.history[originalSlug];
 
       // Rename old histories
-      Object.keys(this.histories).forEach((key) => {
+      for (const key of Object.keys(this.histories)) {
         if (key.startsWith(`${originalSlug}-`)) {
           const new_key = key.replace(originalSlug, slug);
           this.histories[new_key] = { ...this.histories[key] };
           delete this.histories[key];
         }
-      });
+      }
     }
     if (!Array.isArray(this.history[slug])) {
       debug('Creating history...');

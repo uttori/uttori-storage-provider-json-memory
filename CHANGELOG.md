@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.0](https://github.com/uttori/uttori-storage-provider-json-file/compare/v4.0.0...v4.1.0) - 2021-02-28
+
+- 🛠 Switch memory cache data type (Array ➜ Object)
+- 🛠 Fix return types
+- 🛠 Remove auto adding `tags`, `customData` fields
+- 🎁 Update dev dependencies
+
 ## [4.0.0](https://github.com/uttori/uttori-storage-provider-json-memory/compare/v3.4.3...v4.0.0) - 2021-01-16
 
 - 🧰 Add ESM Support

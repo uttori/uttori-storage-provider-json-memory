@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-array-callback-reference, unicorn/no-fn-reference-in-iterator, unicorn/prefer-ternary */
+/** @type {Function} */
 let debug = () => {}; try { debug = require('debug')('Uttori.StorageProvider.JSON.QueryTools'); } catch {}
 const R = require('ramda');
 const { parseQueryToRamda, validateQuery, fyShuffle } = require('uttori-utilities');
@@ -8,7 +8,7 @@ const { parseQueryToRamda, validateQuery, fyShuffle } = require('uttori-utilitie
  *
  * @param {string} query - The SQL-like query to parse.
  * @param {object[]} objects - An array of object to search within.
- * @returns {object[]} Returns an array of all matched documents.
+ * @returns {object[]|number} Returns an array of all matched documents.
  * @example
  * processQuery('SELECT name FROM table WHERE age > 1 ORDER BY RANDOM LIMIT 3', [{ ... }, ...]);
  * ➜ [{ ... }, ...]
@@ -22,6 +22,7 @@ const processQuery = (query, objects) => {
   debug('Found order:', order);
   debug('Found limit:', limit);
   const whereFunctions = parseQueryToRamda(where);
+  // eslint-disable-next-line unicorn/no-array-callback-reference
   const filtered = R.filter(whereFunctions)(objects);
 
   // Short circuit when we only want the counts.
@@ -31,38 +32,12 @@ const processQuery = (query, objects) => {
 
   // Sort / Order
   let output;
-  if (order[0].prop === 'RANDOM') {
-    output = fyShuffle(filtered);
-  } else {
-    output = R.sortWith(
-      order.map((value) => {
-        const sorter = value.sort === 'ASC' ? R.ascend : R.descend;
-        return sorter(R.prop(value.prop));
-      }),
-    )(filtered);
-  }
-
-  // const sorter = R.cond([
-  //   [
-  //     R.pathEq(['sort'], 'ASC'),
-  //     value =>
-  //       R.ascend(
-  //         R.prop(R.path(['prop'], value))
-  //       )
-  //   ],
-  //   [
-  //     R.pathEq(['sort'], 'DESC'),
-  //     value =>
-  //       R.descend(
-  //         R.prop(R.path(['prop'], value))
-  //       )
-  //   ],
-  //   [
-  //     R.pathEq(['sort'], 'RANDOM'),
-  //     value => R.comparator(() => Math.random() - Math.random())
-  //   ],
-  // ])({ prop: 'age', sort: 'RANDOM' });
-  // R.sortWith([sorter])(docs);
+  output = order[0].prop === 'RANDOM' ? fyShuffle(filtered) : R.sortWith(
+    order.map((value) => {
+      const sorter = value.sort === 'ASC' ? R.ascend : R.descend;
+      return sorter(R.prop(value.prop));
+    }),
+  )(filtered);
 
   // Limit
   if (limit > 0) {

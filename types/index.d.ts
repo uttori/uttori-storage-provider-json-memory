@@ -1,21 +1,21 @@
 declare module "query-tools" {
-    export function processQuery(query: string, objects: object[]): object[];
+    export function processQuery(query: string, objects: object[]): object[] | number;
 }
 declare module "storage-provider" {
     export = StorageProvider;
     class StorageProvider {
         constructor(config?: {
-            update_timestamps: boolean;
-            use_history: boolean;
+            update_timestamps?: boolean;
+            use_history?: boolean;
         });
         config: {
             update_timestamps: boolean;
             use_history: boolean;
         };
-        documents: any[];
+        documents: {};
         history: {};
         histories: {};
-        all(): any[];
+        all(): object;
         getQuery(query: string): any[];
         get(slug: string): UttoriDocument;
         getHistory(slug: string): object;
@@ -34,7 +34,7 @@ declare module "storage-provider" {
         updateHistory({ slug, content, originalSlug }: {
             slug: string;
             content: UttoriDocument;
-            originalSlug: string;
+            originalSlug?: string;
         }): void;
     }
     namespace StorageProvider {
@@ -42,11 +42,8 @@ declare module "storage-provider" {
     }
     type UttoriDocument = {
         slug: string;
-        title?: string;
         createDate?: number | Date;
         updateDate?: number | Date;
-        tags?: string[];
-        customData?: object;
     };
 }
 declare module "plugin" {

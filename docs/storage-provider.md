@@ -6,6 +6,13 @@
 </dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#debug">debug()</a> : <code>function</code></dt>
+<dd></dd>
+</dl>
+
 ## Typedefs
 
 <dl>
@@ -30,7 +37,7 @@ Storage for Uttori documents using JSON objects in memory.
 
 * [StorageProvider](#StorageProvider)
     * [new StorageProvider([config])](#new_StorageProvider_new)
-    * [.all()](#StorageProvider+all) ⇒ <code>Array</code>
+    * [.all()](#StorageProvider+all) ⇒ <code>object</code>
     * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
     * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
     * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>object</code>
@@ -60,15 +67,15 @@ const storageProvider = new StorageProvider();
 ```
 <a name="StorageProvider+all"></a>
 
-### storageProvider.all() ⇒ <code>Array</code>
+### storageProvider.all() ⇒ <code>object</code>
 Returns all documents.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>Array</code> - All documents.  
+**Returns**: <code>object</code> - All documents.  
 **Example**  
 ```js
 storageProvider.all();
-➜ [{ slug: 'first-document', ... }, ...]
+➜ { 'first-document': { slug: 'first-document', ... }, ... }
 ```
 <a name="StorageProvider+getQuery"></a>
 
@@ -190,18 +197,19 @@ Updates History for a given slug, renaming the key and history key as needed.
 | params.content | [<code>UttoriDocument</code>](#UttoriDocument) | The revision of the document to be saved. |
 | [params.originalSlug] | <code>string</code> | The original slug identifying the document, or the slug if it has not changed. |
 
+<a name="debug"></a>
+
+## debug() : <code>function</code>
+**Kind**: global function  
 <a name="UttoriDocument"></a>
 
 ## UttoriDocument
 **Kind**: global typedef  
 **Properties**
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| slug | <code>string</code> |  | The unique identifier for the document. |
-| [title] | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The unique identifier for the document. |
-| [createDate] | <code>number</code> \| <code>Date</code> |  | The creation date of the document. |
-| [updateDate] | <code>number</code> \| <code>Date</code> |  | The last date the document was updated. |
-| [tags] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | The unique identifier for the document. |
-| [customData] | <code>object</code> | <code>{}</code> | Any extra meta data for the document. |
+| Name | Type | Description |
+| --- | --- | --- |
+| slug | <code>string</code> | The unique identifier for the document. |
+| [createDate] | <code>number</code> \| <code>Date</code> | The creation date of the document. |
+| [updateDate] | <code>number</code> \| <code>Date</code> | The last date the document was updated. |
 
