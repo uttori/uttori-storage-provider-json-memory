@@ -1,8 +1,7 @@
 // @ts-nocheck
-/* eslint-disable unicorn/no-useless-undefined */
 const test = require('ava');
 const R = require('ramda');
-const StorageProvider = require('../src/storage-provider.js');
+const StorageProvider = require('../src/storage-provider');
 
 const tagExample = 'Example Tag';
 const tagFake = 'Fake';
@@ -200,7 +199,7 @@ test('get(slug): returns the matching document', (t) => {
 test('get(slug): returns undefined when there is no slug', (t) => {
   const s = new StorageProvider();
   s.add(example);
-  const results = s.get(undefined);
+  const results = s.get();
   t.is(results, undefined);
 });
 

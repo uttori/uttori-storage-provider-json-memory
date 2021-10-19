@@ -106,7 +106,7 @@ class StorageProvider {
    * Returns the history of edits for a given slug.
    *
    * @param {string} slug - The slug of the document to get history for.
-   * @returns {object} The returned history object.
+   * @returns {string[]} The returned history object.
    * @memberof StorageProvider
    */
   getHistory(slug) {

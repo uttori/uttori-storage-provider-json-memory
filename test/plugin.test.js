@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 const test = require('ava');
 const { EventDispatcher } = require('@uttori/event-dispatcher');
-const Plugin = require('../src/plugin.js');
+const Plugin = require('../src/plugin');
 
 test('register(context): can register', (t) => {
   t.notThrows(() => {

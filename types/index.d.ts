@@ -18,7 +18,7 @@ declare module "storage-provider" {
         all(): object;
         getQuery(query: string): any[];
         get(slug: string): UttoriDocument;
-        getHistory(slug: string): object;
+        getHistory(slug: string): string[];
         getRevision({ slug, revision }: {
             slug: string;
             revision: string | number;

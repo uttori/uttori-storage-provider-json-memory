@@ -27,34 +27,32 @@
     "uttori-utilities": "^2.3.0"
   },
   "optionalDependencies": {
-    "debug": "^4.3.1"
+    "debug": "^4.3.2"
   },
   "devDependencies": {
     "ava": "^3.15.0",
-    "coveralls": "^3.1.0",
-    "docsify-cli": "^4.4.2",
     "eslint": "^7.21.0",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-ava": "^11.0.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsdoc": "^32.2.0",
+    "eslint-plugin-ava": "^13.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsdoc": "^36.1.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-no-inferred-method-name": "^2.0.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-optimize-regex": "^1.2.0",
+    "eslint-plugin-optimize-regex": "^1.2.1",
     "eslint-plugin-ramda": "^2.5.1",
-    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-sonarjs": "^0.6.0",
-    "eslint-plugin-unicorn": "^28.0.2",
-    "eslint-plugin-xss": "^0.1.10",
-    "jsdoc": "^3.6.6",
-    "jsdoc-to-markdown": "^7.0.0",
+    "eslint-plugin-sonarjs": "^0.10.0",
+    "eslint-plugin-unicorn": "^37.0.1",
+    "eslint-plugin-xss": "^0.1.11",
+    "jsdoc": "^3.6.7",
+    "jsdoc-to-markdown": "^7.1.0",
     "nyc": "^15.1.0",
     "pre-commit": "^1.2.2",
-    "release-it": "^14.4.1",
-    "typescript": "^4.2.2"
+    "release-it": "^14.11.6",
+    "typescript": "^4.4.4"
   },
   "files": [
     "esm/*",
@@ -106,7 +104,6 @@
   },
   "scripts": {
     "docs": "jsdoc2md --private --example-lang js --template rm.hbs src/storage-provider.js > README.md; jsdoc2md --private --example-lang js src/storage-provider.js > docs/storage-provider.md; jsdoc2md --private --example-lang js src/plugin.js > docs/plugin.md; jsdoc2md --private --example-lang js src/query-tools.js > docs/query-tools.md;",
-    "docs-serve": "docsify init ./docs && docsify serve ./docs",
     "lint": "eslint .",
     "make-types": "rm -fr types/ && mkdir types && tsc --project .tsconfig.json",
     "release": "release-it",

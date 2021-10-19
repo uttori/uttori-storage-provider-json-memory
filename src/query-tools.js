@@ -22,7 +22,6 @@ const processQuery = (query, objects) => {
   debug('Found order:', order);
   debug('Found limit:', limit);
   const whereFunctions = parseQueryToRamda(where);
-  // eslint-disable-next-line unicorn/no-array-callback-reference
   const filtered = R.filter(whereFunctions)(objects);
 
   // Short circuit when we only want the counts.
