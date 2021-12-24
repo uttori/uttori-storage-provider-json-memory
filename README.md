@@ -121,7 +121,7 @@ Storage for Uttori documents using JSON objects in memory.
     * [.all()](#StorageProvider+all) ⇒ <code>object</code>
     * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
     * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
-    * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>object</code>
+    * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>Array.&lt;string&gt;</code>
     * [.getRevision(params)](#StorageProvider+getRevision) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
     * [.add(document)](#StorageProvider+add)
     * [.updateValid(params)](#StorageProvider+updateValid) ℗
@@ -184,11 +184,11 @@ Returns a document for a given slug.
 
 <a name="StorageProvider+getHistory"></a>
 
-### storageProvider.getHistory(slug) ⇒ <code>object</code>
+### storageProvider.getHistory(slug) ⇒ <code>Array.&lt;string&gt;</code>
 Returns the history of edits for a given slug.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>object</code> - The returned history object.  
+**Returns**: <code>Array.&lt;string&gt;</code> - The returned history object.  
 
 | Param | Type | Description |
 | --- | --- | --- |

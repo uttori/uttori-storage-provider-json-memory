@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.2](https://github.com/uttori/uttori-storage-provider-json-file/compare/v4.1.1...v4.1.2) - 2021-12-22
+
+- 🎁 Update dev dependencies
+
 ## [4.1.1](https://github.com/uttori/uttori-storage-provider-json-file/compare/v4.1.0...v4.1.1) - 2021-10-18
 
 - 🛠 Fix return type for getHistory

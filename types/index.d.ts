@@ -1,3 +1,5 @@
+declare module "@uttori/storage-provider-json-memory";
+
 declare module "query-tools" {
     export function processQuery(query: string, objects: object[]): object[] | number;
 }
