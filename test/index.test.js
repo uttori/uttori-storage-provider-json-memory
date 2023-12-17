@@ -1,6 +1,6 @@
 // @ts-nocheck
-const test = require('ava');
-const { Plugin, StorageProvider } = require('../src');
+import test from 'ava';
+import { Plugin, StorageProvider } from '../src/index.js';
 
 test('Plugin: is properly exported', (t) => {
   t.notThrows(() => {

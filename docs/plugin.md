@@ -1,18 +1,3 @@
-## Classes
-
-<dl>
-<dt><a href="#Plugin">Plugin</a></dt>
-<dd><p>Uttori Storage Provider - JSON Memory, Uttori Plugin Adapter</p>
-</dd>
-</dl>
-
-## Functions
-
-<dl>
-<dt><a href="#debug">debug()</a> : <code>function</code></dt>
-<dd></dd>
-</dl>
-
 <a name="Plugin"></a>
 
 ## Plugin
@@ -85,7 +70,3 @@ const context = {
 };
 Plugin.register(context);
 ```
-<a name="debug"></a>
-
-## debug() : <code>function</code>
-**Kind**: global function  

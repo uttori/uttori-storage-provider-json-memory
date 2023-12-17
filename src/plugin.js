@@ -1,10 +1,11 @@
-/** @type {Function} */
-let debug = () => {}; try { debug = require('debug')('Uttori.Plugin.StorageProvider.JSON'); } catch {}
-const StorageProvider = require('./storage-provider');
+import StorageProvider from './storage-provider.js';
+
+let debug = (..._) => {};
+/* c8 ignore next */
+try { const { default: d } = await import('debug'); debug = d('Uttori.Plugin.StorageProvider.JSON'); } catch {}
 
 /**
  * Uttori Storage Provider - JSON Memory, Uttori Plugin Adapter
- *
  * @example <caption>Plugin</caption>
  * const storage = Plugin.callback(viewModel, context);
  * @class
@@ -12,7 +13,6 @@ const StorageProvider = require('./storage-provider');
 class Plugin {
   /**
    * The configuration key for plugin to look for in the provided configuration.
-   *
    * @type {string}
    * @returns {string} The configuration key.
    * @example <caption>Plugin.configKey</caption>
@@ -25,7 +25,6 @@ class Plugin {
 
   /**
    * The default configuration.
-   *
    * @returns {object} The configuration.
    * @example <caption>Plugin.defaultConfig()</caption>
    * const config = { ...Plugin.defaultConfig(), ...context.config[Plugin.configKey] };
@@ -47,7 +46,6 @@ class Plugin {
 
   /**
    * Register the plugin with a provided set of events on a provided Hook system.
-   *
    * @param {object} context - A Uttori-like context.
    * @param {object} context.hooks - An event system / hook system to use.
    * @param {Function} context.hooks.on - An event registration function.
@@ -99,4 +97,4 @@ class Plugin {
   }
 }
 
-module.exports = Plugin;
+export default Plugin;

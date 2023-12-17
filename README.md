@@ -24,8 +24,8 @@ npm install --save @uttori/storage-provider-json-memory
 
 ```js
 {
-  update_timestamps: true,
-  use_history: true,
+  updateTimestamps: true,
+  useHistory: true,
   // Registration Events
   events: {
     add: ['storage-add'],
@@ -87,13 +87,6 @@ const results = s.getQuery('SELECT COUNT(*) FROM documents WHERE slug IS_NOT_NUL
 </dd>
 </dl>
 
-## Functions
-
-<dl>
-<dt><a href="#debug">debug()</a> : <code>function</code></dt>
-<dd></dd>
-</dl>
-
 ## Typedefs
 
 <dl>
@@ -118,11 +111,11 @@ Storage for Uttori documents using JSON objects in memory.
 
 * [StorageProvider](#StorageProvider)
     * [new StorageProvider([config])](#new_StorageProvider_new)
-    * [.all()](#StorageProvider+all) ⇒ <code>object</code>
-    * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Array</code>
-    * [.get(slug)](#StorageProvider+get) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
-    * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>Array.&lt;string&gt;</code>
-    * [.getRevision(params)](#StorageProvider+getRevision) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
+    * [.all()](#StorageProvider+all) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.getQuery(query)](#StorageProvider+getQuery) ⇒ <code>Promise.&lt;(number\|Array.&lt;any&gt;)&gt;</code>
+    * [.get(slug)](#StorageProvider+get) ⇒ [<code>Promise.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
+    * [.getHistory(slug)](#StorageProvider+getHistory) ⇒ <code>Promise.&lt;Array.&lt;string&gt;&gt;</code>
+    * [.getRevision(params)](#StorageProvider+getRevision) ⇒ [<code>Promise.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
     * [.add(document)](#StorageProvider+add)
     * [.updateValid(params)](#StorageProvider+updateValid) ℗
     * [.update(params)](#StorageProvider+update)
@@ -136,11 +129,11 @@ Storage for Uttori documents using JSON objects in memory.
 Creates an instance of StorageProvider.
 
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [config] | <code>object</code> |  | A configuration object. |
-| [config.update_timestamps] | <code>boolean</code> | <code>true</code> | Should update times be marked at the time of edit. |
-| [config.use_history] | <code>boolean</code> | <code>true</code> | Should history entries be created. |
+| Param | Type | Description |
+| --- | --- | --- |
+| [config] | <code>object</code> | A configuration object. |
+| [config.updateTimestamps] | <code>boolean</code> | Should update times be marked at the time of edit. |
+| [config.useHistory] | <code>boolean</code> | Should history entries be created. |
 
 **Example** *(Init StorageProvider)*  
 ```js
@@ -148,11 +141,11 @@ const storageProvider = new StorageProvider();
 ```
 <a name="StorageProvider+all"></a>
 
-### storageProvider.all() ⇒ <code>object</code>
+### storageProvider.all() ⇒ <code>Promise.&lt;object&gt;</code>
 Returns all documents.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>object</code> - All documents.  
+**Returns**: <code>Promise.&lt;object&gt;</code> - All documents.  
 **Example**  
 ```js
 storageProvider.all();
@@ -160,11 +153,11 @@ storageProvider.all();
 ```
 <a name="StorageProvider+getQuery"></a>
 
-### storageProvider.getQuery(query) ⇒ <code>Array</code>
+### storageProvider.getQuery(query) ⇒ <code>Promise.&lt;(number\|Array.&lt;any&gt;)&gt;</code>
 Returns all documents matching a given query.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>Array</code> - The items matching the supplied query.  
+**Returns**: <code>Promise.&lt;(number\|Array.&lt;any&gt;)&gt;</code> - The items matching the supplied query.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -172,11 +165,11 @@ Returns all documents matching a given query.
 
 <a name="StorageProvider+get"></a>
 
-### storageProvider.get(slug) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
+### storageProvider.get(slug) ⇒ [<code>Promise.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
 Returns a document for a given slug.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: [<code>UttoriDocument</code>](#UttoriDocument) - The returned UttoriDocument.  
+**Returns**: [<code>Promise.&lt;UttoriDocument&gt;</code>](#UttoriDocument) - The returned UttoriDocument.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -184,11 +177,11 @@ Returns a document for a given slug.
 
 <a name="StorageProvider+getHistory"></a>
 
-### storageProvider.getHistory(slug) ⇒ <code>Array.&lt;string&gt;</code>
+### storageProvider.getHistory(slug) ⇒ <code>Promise.&lt;Array.&lt;string&gt;&gt;</code>
 Returns the history of edits for a given slug.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: <code>Array.&lt;string&gt;</code> - The returned history object.  
+**Returns**: <code>Promise.&lt;Array.&lt;string&gt;&gt;</code> - The returned history object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -196,11 +189,11 @@ Returns the history of edits for a given slug.
 
 <a name="StorageProvider+getRevision"></a>
 
-### storageProvider.getRevision(params) ⇒ [<code>UttoriDocument</code>](#UttoriDocument)
+### storageProvider.getRevision(params) ⇒ [<code>Promise.&lt;UttoriDocument&gt;</code>](#UttoriDocument)
 Returns a specifc revision from the history of edits for a given slug and revision timestamp.
 
 **Kind**: instance method of [<code>StorageProvider</code>](#StorageProvider)  
-**Returns**: [<code>UttoriDocument</code>](#UttoriDocument) - The returned revision of the document.  
+**Returns**: [<code>Promise.&lt;UttoriDocument&gt;</code>](#UttoriDocument) - The returned revision of the document.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -278,10 +271,6 @@ Updates History for a given slug, renaming the key and history key as needed.
 | params.content | [<code>UttoriDocument</code>](#UttoriDocument) | The revision of the document to be saved. |
 | [params.originalSlug] | <code>string</code> | The original slug identifying the document, or the slug if it has not changed. |
 
-<a name="debug"></a>
-
-## debug() : <code>function</code>
-**Kind**: global function  
 <a name="UttoriDocument"></a>
 
 ## UttoriDocument
