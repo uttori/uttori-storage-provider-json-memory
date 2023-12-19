@@ -1,10 +1,10 @@
 <a name="processQuery"></a>
 
-## processQuery(query, objects) ⇒ <code>Array.&lt;object&gt;</code> \| <code>number</code>
+## processQuery(query, objects) ⇒ <code>Array.&lt;UttoriDocument&gt;</code> \| <code>number</code>
 Processes a query string.
 
 **Kind**: global function  
-**Returns**: <code>Array.&lt;object&gt;</code> \| <code>number</code> - Returns an array of all matched documents, or a count.  
+**Returns**: <code>Array.&lt;UttoriDocument&gt;</code> \| <code>number</code> - Returns an array of all matched documents, or a count.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -16,3 +16,7 @@ Processes a query string.
 processQuery('SELECT name FROM table WHERE age > 1 ORDER BY RANDOM LIMIT 3', [{ ... }, ...]);
 ➜ [{ ... }, ...]
 ```
+<a name="processQuery..whereFunctions"></a>
+
+### processQuery~whereFunctions : <code>Array.&lt;function()&gt;</code>
+**Kind**: inner constant of [<code>processQuery</code>](#processQuery)  

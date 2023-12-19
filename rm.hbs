@@ -47,13 +47,10 @@ npm install --save @uttori/storage-provider-json-memory
 ```js
 // When part of UttoriWiki:
 import { Plugin as StorageProviderJSON } from '@uttori/storage-provider-json-memory';
-// or
-const { Plugin: StorageProviderJSON } = require('@uttori/storage-provider-json-memory');
 
 // When stand alone:
 import StorageProvider from '@uttori/storage-provider-json-memory';
-// or
-const { StorageProvider } = require('@uttori/storage-provider-json-memory');
+
 const s = new StorageProvider();
 s.add({
   title: 'Example Title',

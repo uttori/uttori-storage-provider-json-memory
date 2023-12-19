@@ -370,7 +370,7 @@ test('#parse(sql:String):Object: throws a SyntaxError if the supplied brackets d
   const parser = new SqlWhereParser({ wrapQuery: false });
   t.throws(() => {
     parser.parse(sql);
-  }, { message: 'Unmatched pair within parentheses.' });
+  }, { message: 'Unmatched pair within parentheses, cannot find value of: [' });
 });
 
 test('#parse(sql:String):Object: throws a SyntaxError if the supplied brackets do not match', (t) => {
@@ -386,7 +386,7 @@ test('#parse(sql:String):Object: throws a SyntaxError if the supplied brackets c
   const parser = new SqlWhereParser({ wrapQuery: false });
   t.throws(() => {
     parser.parse(sql);
-  }, { message: 'Unmatched pair within brackets.' });
+  }, { message: 'Unmatched pair within brackets, no operator matches: (' });
 });
 
 test('#parse(sql:String, evaluator:Function):*: Uses the supplied `evaluator(operatorValue:String|Symbol, operands:Array)` function to convert an operator and its operands into its evaluation. '
@@ -430,7 +430,7 @@ test('#parse(sql, evaluator): can parse arrays back to arrays', (t) => {
 });
 
 test('#parse(sql, evaluator): "Evaluation" is subjective, and this can be exploited to convert the default object-based structure of the AST into something else, like this array-based structure', (t) => {
-  const sql = 'name = "First Last" AND age >= 27';
+  const sql = '(name = "First Last" AND age >= 27)';
   const parser = new SqlWhereParser();
 
   const parsed = parser.parse(sql, (operatorValue, operands) => [operatorValue, operands]);

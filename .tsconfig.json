@@ -1,10 +1,11 @@
 {
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
-    "test"
+    "test/**/*.test.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -14,6 +15,7 @@
     "downlevelIteration": true,
     "emitDeclarationOnly": true,
     "extendedDiagnostics": true,
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "moduleResolution": "nodenext",
     "outDir": "dist",
     "noEmit": false,
@@ -26,7 +28,7 @@
     "types": ["node"],
     "typeRoots": [
       "node_modules/@types",
-      "ode_modules/@uttori"
+      "node_modules/@uttori"
     ]
   }
 }

@@ -8,6 +8,7 @@ export default Plugin;
 declare class Plugin {
     /**
      * The configuration key for plugin to look for in the provided configuration.
+     * In this case the key is `uttori-plugin-storage-provider-json-memory`.
      * @type {string}
      * @returns {string} The configuration key.
      * @example <caption>Plugin.configKey</caption>
@@ -17,19 +18,18 @@ declare class Plugin {
     static get configKey(): string;
     /**
      * The default configuration.
-     * @returns {object} The configuration.
+     * @returns {import('./storage-provider.js').StorageProviderConfig} The configuration.
      * @example <caption>Plugin.defaultConfig()</caption>
      * const config = { ...Plugin.defaultConfig(), ...context.config[Plugin.configKey] };
      * @static
      */
-    static defaultConfig(): object;
+    static defaultConfig(): import('./storage-provider.js').StorageProviderConfig;
     /**
      * Register the plugin with a provided set of events on a provided Hook system.
      * @param {object} context - A Uttori-like context.
      * @param {object} context.hooks - An event system / hook system to use.
      * @param {Function} context.hooks.on - An event registration function.
-     * @param {object} context.config - A provided configuration to use.
-     * @param {object} context.config.events - An object whose keys correspong to methods, and contents are events to listen for.
+     * @param {Record<string, import('./storage-provider.js').StorageProviderConfig>} context.config - A provided configuration to use.
      * @example <caption>Plugin.register(context)</caption>
      * const context = {
      *   hooks: {
@@ -57,9 +57,7 @@ declare class Plugin {
         hooks: {
             on: Function;
         };
-        config: {
-            events: object;
-        };
+        config: Record<string, import('./storage-provider.js').StorageProviderConfig>;
     }): void;
 }
 //# sourceMappingURL=plugin.d.ts.map

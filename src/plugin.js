@@ -2,6 +2,7 @@ import StorageProvider from './storage-provider.js';
 
 let debug = (..._) => {};
 /* c8 ignore next */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 try { const { default: d } = await import('debug'); debug = d('Uttori.Plugin.StorageProvider.JSON'); } catch {}
 
 /**
@@ -13,6 +14,7 @@ try { const { default: d } = await import('debug'); debug = d('Uttori.Plugin.Sto
 class Plugin {
   /**
    * The configuration key for plugin to look for in the provided configuration.
+   * In this case the key is `uttori-plugin-storage-provider-json-memory`.
    * @type {string}
    * @returns {string} The configuration key.
    * @example <caption>Plugin.configKey</caption>
@@ -25,7 +27,7 @@ class Plugin {
 
   /**
    * The default configuration.
-   * @returns {object} The configuration.
+   * @returns {import('./storage-provider.js').StorageProviderConfig} The configuration.
    * @example <caption>Plugin.defaultConfig()</caption>
    * const config = { ...Plugin.defaultConfig(), ...context.config[Plugin.configKey] };
    * @static
@@ -49,8 +51,7 @@ class Plugin {
    * @param {object} context - A Uttori-like context.
    * @param {object} context.hooks - An event system / hook system to use.
    * @param {Function} context.hooks.on - An event registration function.
-   * @param {object} context.config - A provided configuration to use.
-   * @param {object} context.config.events - An object whose keys correspong to methods, and contents are events to listen for.
+   * @param {Record<string, import('./storage-provider.js').StorageProviderConfig>} context.config - A provided configuration to use.
    * @example <caption>Plugin.register(context)</caption>
    * const context = {
    *   hooks: {
@@ -79,18 +80,19 @@ class Plugin {
     if (!context || !context.hooks || typeof context.hooks.on !== 'function') {
       throw new Error("Missing event dispatcher in 'context.hooks.on(event, callback)' format.");
     }
+    /** @type {import('./storage-provider.js').StorageProviderConfig} */
     const config = { ...Plugin.defaultConfig(), ...context.config[Plugin.configKey] };
     if (!config.events) {
       throw new Error("Missing events to listen to for in 'config.events'.");
     }
 
     const storage = new StorageProvider();
-    for (const method of Object.keys(config.events)) {
-      for (const event of config.events[method]) {
-        if (typeof storage[method] !== 'function') {
-          debug(`Missing function "${method}" for key "${event}"`);
-          return;
-        }
+    for (const [method, eventNames] of Object.entries(config.events)) {
+      if (typeof storage[method] !== 'function') {
+        debug(`Missing function "${method}"`);
+        continue;
+      }
+      for (const event of eventNames) {
         context.hooks.on(event, storage[method]);
       }
     }
