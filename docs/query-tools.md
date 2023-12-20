@@ -9,14 +9,14 @@ Processes a query string.
 | Param | Type | Description |
 | --- | --- | --- |
 | query | <code>string</code> | The SQL-like query to parse. |
-| objects | <code>Array.&lt;object&gt;</code> | An array of object to search within. |
+| objects | <code>Array.&lt;UttoriDocument&gt;</code> | An array of object to search within. |
 
 **Example**  
 ```js
 processQuery('SELECT name FROM table WHERE age > 1 ORDER BY RANDOM LIMIT 3', [{ ... }, ...]);
 ➜ [{ ... }, ...]
 ```
-<a name="processQuery..whereFunctions"></a>
+<a name="processQuery..filtered"></a>
 
-### processQuery~whereFunctions : <code>Array.&lt;function()&gt;</code>
+### processQuery~filtered : <code>Array.&lt;UttoriDocument&gt;</code>
 **Kind**: inner constant of [<code>processQuery</code>](#processQuery)  

@@ -52,7 +52,7 @@ import { Plugin as StorageProviderJSON } from '@uttori/storage-provider-json-mem
 import StorageProvider from '@uttori/storage-provider-json-memory';
 
 const s = new StorageProvider();
-s.add({
+await s.add({
   title: 'Example Title',
   slug: 'example-title',
   content: '## Example Title',
@@ -66,11 +66,11 @@ s.add({
     keyC: 'value-c',
   },
 });
-const results = s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL ORDER BY slug ASC LIMIT 1');
+const results = await s.getQuery('SELECT tags FROM documents WHERE slug IS_NOT_NULL ORDER BY slug ASC LIMIT 1');
 ➜  results === [
       { tags: ['Example Tag'] },
     ]
-const results = s.getQuery('SELECT COUNT(*) FROM documents WHERE slug IS_NOT_NULL ORDER BY RANDOM ASC LIMIT -1');
+const results = await s.getQuery('SELECT COUNT(*) FROM documents WHERE slug IS_NOT_NULL ORDER BY RANDOM ASC LIMIT -1');
 ➜  results === 1
 ```
 

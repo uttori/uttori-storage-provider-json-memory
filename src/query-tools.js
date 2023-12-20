@@ -1,4 +1,4 @@
-import parseQueryToRamda from './parse-query-to-ramda.js';
+import parseQueryToFilterFunctions from './parse-query-filter-functions.js';
 import validateQuery from './validate-query.js';
 import fyShuffle from './fisher-yates-shuffle.js';
 
@@ -10,7 +10,7 @@ try { const { default: d } = await import('debug'); debug = d('Uttori.StoragePro
 /**
  * Processes a query string.
  * @param {string} query - The SQL-like query to parse.
- * @param {object[]} objects - An array of object to search within.
+ * @param {import('./storage-provider.js').UttoriDocument[]} objects - An array of object to search within.
  * @returns {import('./storage-provider.js').UttoriDocument[]|number} Returns an array of all matched documents, or a count.
  * @example
  * ```js
@@ -26,8 +26,8 @@ const processQuery = (query, objects) => {
   debug('Found where:', where);
   debug('Found order:', order);
   debug('Found limit:', limit);
-  /** @type {Function[]} */
-  const whereFunctions = parseQueryToRamda(where);
+  const whereFunctions = parseQueryToFilterFunctions(where);
+  /** @type {import('./storage-provider.js').UttoriDocument[]} */
   const filtered = objects.filter(whereFunctions);
 
   // Short circuit when we only want the counts.
@@ -58,6 +58,7 @@ const processQuery = (query, objects) => {
   // Select
   if (!fields.includes('*')) {
     output = output.map((item) => {
+      /** @type {import('./storage-provider.js').UttoriDocument} */
       const newItem = {};
       fields.forEach((field) => {
         if (Object.hasOwn(item, field)) {
