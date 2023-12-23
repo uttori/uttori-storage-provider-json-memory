@@ -5,34 +5,52 @@
     "plugin:import/recommended",
     "plugin:jsdoc/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:node/recommended",
+    "plugin:n/recommended",
     "plugin:optimize-regex/all",
-    "plugin:ramda/recommended",
-    "plugin:security/recommended"
+    "plugin:security/recommended-legacy",
+    "plugin:sonarjs/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked"
   ],
   "plugins": [
+    "@typescript-eslint",
     "anti-trojan-source",
     "ava",
     "import",
     "jsdoc",
     "jsx-a11y",
     "no-inferred-method-name",
-    "node",
+    "n",
     "optimize-regex",
-    "ramda",
     "security",
+    "sonarjs",
     "xss"
   ],
   "env": {
     "browser": true,
     "node": true
   },
-  "globals": {},
-  "parserOptions": {
-    "ecmaVersion": 2021,
-    "requireConfigFile": false
+  "globals": {
+    "jest": true,
+    "expect": true,
+    "test": true,
+    "JSX": true
   },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "requireConfigFile": false,
+    "project": ["./.tsconfig.json"]
+  },
+  "ignorePatterns": [
+    "temp.js",
+    "dist/*.ts",
+    "test/*.js"
+  ],
   "rules": {
+    "@typescript-eslint/no-unsafe-argument": "warn",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
+    "@typescript-eslint/no-unsafe-return": "warn",
     "anti-trojan-source/no-bidi": "error",
     "import/no-extraneous-dependencies": [
       "error", {
@@ -43,13 +61,17 @@
     ],
     "ava/no-only-test": 0,
     "camelcase": 0,
+    "class-methods-use-this": 0,
     "consistent-return": ["warn", { "treatUndefinedAsUnspecified": false }],
     "global-require": 0,
+    "import/extensions": ["warn", "ignorePackages"],
     "import/no-dynamic-require": 0,
+    "import/no-unresolved": 0,
     "max-classes-per-file": 0,
     "max-len": 0,
+    "no-bitwise": 0,
+    "no-continue": 0,
     "no-empty": ["error", { "allowEmptyCatch": true }],
-    "no-inferred-method-name/no-inferred-method-name": "error",
     "no-param-reassign": 0,
     "no-plusplus": 0,
     "no-restricted-syntax": [
@@ -67,13 +89,17 @@
         "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
       }
     ],
-    "no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_", "caughtErrors": "none" }],
-    "node/no-unpublished-require": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_", "caughtErrors": "none" }],
     "object-curly-newline": 0,
-    "ramda/prefer-ramda-boolean": 0,
+    "optimize-regex/optimize-regex": "warn",
     "security/detect-non-literal-fs-filename": 0,
     "security/detect-non-literal-require": 0,
-    "security/detect-object-injection": 0
+    "security/detect-object-injection": 0,
+    "security/detect-possible-timing-attacks": 0,
+    "sonarjs/cognitive-complexity": 0,
+    "sonarjs/no-duplicate-string": 0
   },
   "settings": {
     "jsdoc": {

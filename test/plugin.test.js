@@ -1,8 +1,8 @@
 // @ts-nocheck
 /* eslint-disable security/detect-non-literal-fs-filename */
-const test = require('ava');
-const { EventDispatcher } = require('@uttori/event-dispatcher');
-const Plugin = require('../src/plugin');
+import test from 'ava';
+import { EventDispatcher } from '@uttori/event-dispatcher';
+import Plugin from '../src/plugin.js';
 
 test('register(context): can register', (t) => {
   t.notThrows(() => {
