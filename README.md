@@ -8,6 +8,10 @@
 [![Minified + GZip](https://badgen.net/bundlephobia/minzip/@uttori/storage-provider-json-memory)](https://bundlephobia.com/result?p=@uttori/storage-provider-json-memory)
 [![Minified](https://badgen.net/bundlephobia/min/@uttori/storage-provider-json-memory)](https://bundlephobia.com/result?p=@uttori/storage-provider-json-memory)
 
+# Package Moved
+
+This has been added to the core https://github.com/uttori/uttori-wiki package.
+
 # Uttori Storage Provider - JSON Memory
 
 Uttori Storage Provider using JavaScript objects in memory. This does NOT persist or restore data.
